@@ -3,408 +3,283 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>形伴网 - 档案展示</title>
+  <title>形婚网 - 形婚信息平台</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; }
-    header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    header h1 { font-size: 20px; margin-bottom: 10px; }
-    .tabs { display: flex; gap: 10px; }
-    .tab { padding: 8px 16px; border-radius: 20px; cursor: pointer; background: rgba(255,255,255,0.2); transition: all 0.3s; border: none; color: white; font-size: 14px; }
-    .tab.active { background: white; color: #667eea; }
-    .tab:hover:not(.active) { background: rgba(255,255,255,0.3); }
-    main { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
-    .stats { background: white; border-radius: 12px; padding: 15px; margin-bottom: 20px; display: flex; justify-content: space-around; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .stat-item h3 { font-size: 24px; color: #667eea; }
-    .stat-item p { font-size: 12px; color: #999; margin-top: 4px; }
-    .filters { background: white; border-radius: 12px; padding: 15px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .filters select, .filters input { padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
-    .filters select:focus, .filters input:focus { border-color: #667eea; }
-    .filters .reset-btn { padding: 8px 16px; background: #ff4757; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-    .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; }
-    .card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
-    .card-header { position: relative; height: 120px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-    .card-header .avatar { width: 80px; height: 80px; border-radius: 50%; border: 4px solid white; position: absolute; bottom: -40px; left: 20px; background: white; object-fit: cover; }
-    .card-header .gender-badge { position: absolute; top: 10px; right: 10px; padding: 4px 10px; border-radius: 12px; font-size: 12px; background: rgba(255,255,255,0.9); color: #333; }
-    .card-body { padding: 50px 20px 20px; }
-    .card-body h3 { font-size: 18px; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
-    .card-body .age { font-size: 14px; color: #666; font-weight: normal; }
-    .card-body .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
-    .tag { padding: 4px 8px; background: #f0f0f0; border-radius: 4px; font-size: 12px; color: #666; }
-    .tag.pink { background: #ffe0eb; color: #e91e63; }
-    .tag.blue { background: #e0f0ff; color: #2196f3; }
-    .card-footer { display: flex; justify-content: space-between; padding: 15px 20px; background: #fafafa; border-top: 1px solid #f0f0f0; font-size: 12px; color: #999; }
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; }
+    .header { background: #fff; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+    .header h1 { font-size: 20px; color: #1a73e8; text-align: center; }
+    .tabs { display: flex; background: #fff; border-bottom: 1px solid #e0e0e0; overflow-x: auto; }
+    .tab { flex: 1; min-width: 100px; padding: 14px 12px; text-align: center; font-size: 14px; color: #666; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; white-space: nowrap; }
+    .tab.active { color: #1a73e8; border-bottom-color: #1a73e8; font-weight: 600; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; padding: 16px; }
+    .card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s; }
+    .card:hover { transform: translateY(-4px); }
+    .card-header { position: relative; }
+    .card-avatar { width: 100%; height: 180px; object-fit: cover; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; }
+    .card-avatar img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .card-badge { position: absolute; top: 12px; left: 12px; background: #1a73e8; color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .card-badge.female { background: #e91e63; }
+    .card-online { position: absolute; top: 12px; right: 12px; width: 12px; height: 12px; background: #34a853; border-radius: 50%; border: 2px solid #fff; }
+    .card-body { padding: 16px; }
+    .card-name { font-size: 18px; font-weight: 700; color: #333; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .card-name .verified { color: #1a73e8; font-size: 14px; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .tag { background: #e8f0fe; color: #1a73e8; padding: 4px 10px; border-radius: 6px; font-size: 12px; }
+    .tag.female { background: #fce4ec; color: #c2185b; }
+    .card-info { font-size: 13px; color: #666; line-height: 1.6; }
+    .card-info div { margin-bottom: 4px; }
+    .card-footer { padding: 12px 16px; border-top: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+    .card-time { font-size: 12px; color: #999; }
+    .card-btn { background: #1a73e8; color: #fff; border: none; padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .card-btn:hover { background: #1557b0; }
+    .fab { position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border: none; border-radius: 50%; font-size: 28px; box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5); cursor: pointer; z-index: 1000; transition: transform 0.2s, box-shadow 0.2s; }
+    .fab:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6); }
+    .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
     .modal.active { display: flex; }
-    .modal-content { background: white; border-radius: 16px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; }
-    .modal-close { position: absolute; top: 15px; right: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.1); border: none; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .modal-header { height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; }
-    .modal-header .avatar { width: 100px; height: 100px; border-radius: 50%; border: 5px solid white; position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); background: white; object-fit: cover; }
-    .modal-body { padding: 70px 25px 25px; }
-    .modal-body h2 { text-align: center; margin-bottom: 5px; }
-    .modal-body .subtitle { text-align: center; color: #666; margin-bottom: 20px; }
-    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-    .info-item { background: #f8f8f8; padding: 12px; border-radius: 8px; }
-    .info-item label { font-size: 12px; color: #999; display: block; margin-bottom: 4px; }
-    .info-item span { font-size: 14px; color: #333; }
-    .section { margin-bottom: 20px; }
-    .section h4 { font-size: 14px; color: #667eea; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 2px solid #667eea; display: inline-block; }
-    .hobby-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-    .form-page { display: none; }
-    .form-page.active { display: block; }
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; font-size: 14px; margin-bottom: 6px; color: #333; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-    .form-group textarea { resize: vertical; min-height: 80px; }
-    .form-actions { display: flex; gap: 10px; margin-top: 20px; }
-    .btn { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; flex: 1; }
-    .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-    .btn-secondary { background: #f0f0f0; color: #333; }
-    .my-profile-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
-    .my-profile-card h3 { margin-bottom: 10px; }
-    .empty-state { text-align: center; padding: 60px 20px; color: #999; }
-    .empty-state .icon { font-size: 60px; margin-bottom: 15px; }
-    .no-results { text-align: center; padding: 40px; color: #999; grid-column: 1 / -1; }
+    .modal-content { background: #fff; border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
+    @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal-header { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+    .modal-header h2 { font-size: 18px; color: #333; }
+    .modal-close { background: none; border: none; font-size: 24px; color: #999; cursor: pointer; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
+    .modal-close:hover { color: #333; }
+    .modal-body { padding: 20px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; margin-bottom: 6px; font-size: 14px; color: #555; font-weight: 500; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; transition: border-color 0.2s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #1a73e8; }
+    .form-row { display: flex; gap: 12px; }
+    .form-row .form-group { flex: 1; }
+    .modal-footer { padding: 16px 20px; border-top: 1px solid #eee; display: flex; gap: 12px; }
+    .modal-footer button { flex: 1; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-cancel { background: #f5f5f5; color: #666; border: 1px solid #ddd; }
+    .btn-cancel:hover { background: #e8e8e8; }
+    .btn-submit { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border: none; }
+    .btn-submit:hover { opacity: 0.9; }
+    .empty { text-align: center; padding: 60px 20px; color: #999; }
+    .empty-icon { font-size: 64px; margin-bottom: 16px; }
+    .search-bar { padding: 12px 16px; background: #fff; border-bottom: 1px solid #eee; }
+    .search-input { width: 100%; padding: 10px 16px; border: 1px solid #ddd; border-radius: 25px; font-size: 14px; background: #f5f5f5; }
+    .search-input:focus { outline: none; background: #fff; border-color: #1a73e8; }
+    .counter { padding: 12px 16px; background: #e8f0fe; color: #1a73e8; text-align: center; font-size: 14px; }
+    .counter span { font-weight: 700; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>🏠 形伴网</h1>
-    <div class="tabs">
-      <button class="tab active" onclick="showTab('browse')">浏览档案</button>
-      <button class="tab" onclick="showTab('my')">我的档案</button>
-      <button class="tab" onclick="showTab('form')">登记档案</button>
+  <div class="header">
+    <h1>形婚网</h1>
+  </div>
+  
+  <div class="tabs">
+    <div class="tab active" data-filter="all">全部</div>
+    <div class="tab" data-filter="male">男士</div>
+    <div class="tab" data-filter="female">女士</div>
+  </div>
+  
+  <div class="search-bar">
+    <input type="text" class="search-input" placeholder="搜索姓名、地区..." id="searchInput">
+  </div>
+  
+  <div class="counter">当前共有 <span id="counter">0</span> 位会员</div>
+  
+  <div class="cards" id="cards">
+    <div class="empty">
+      <div class="empty-icon">📋</div>
+      <p>暂无会员信息</p>
+      <p style="font-size:13px;margin-top:8px;">点击右下角"+"按钮添加</p>
     </div>
-  </header>
-
-  <main>
-    <div id="browse-page" class="form-page active">
-      <div class="stats">
-        <div class="stat-item"><h3 id="total-count">0</h3><p>总档案数</p></div>
-        <div class="stat-item"><h3 id="male-count">0</h3><p>男性</p></div>
-        <div class="stat-item"><h3 id="female-count">0</h3><p>女性</p></div>
+  </div>
+  
+  <button class="fab" id="fabBtn" title="添加新会员">+</button>
+  
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>登记档案</h2>
+        <button class="modal-close" id="closeModal">×</button>
       </div>
-      <div class="filters">
-        <select id="filter-gender"><option value="">全部性别</option><option value="male">男</option><option value="female">女</option></select>
-        <select id="filter-region"><option value="">全部地区</option><option value="北京">北京</option><option value="上海">上海</option><option value="广州">广州</option><option value="深圳">深圳</option><option value="成都">成都</option><option value="杭州">杭州</option><option value="武汉">武汉</option><option value="西安">西安</option><option value="南京">南京</option><option value="重庆">重庆</option><option value="苏州">苏州</option><option value="长沙">长沙</option><option value="天津">天津</option><option value="郑州">郑州</option><option value="东莞">东莞</option><option value="青岛">青岛</option><option value="沈阳">沈阳</option><option value="宁波">宁波</option><option value="昆明">昆明</option><option value="大连">大连</option></select>
-        <select id="filter-education"><option value="">全部学历</option><option value="初中">初中</option><option value="高中/中专">高中/中专</option><option value="大专">大专</option><option value="本科">本科</option><option value="硕士">硕士</option><option value="博士">博士</option></select>
-        <select id="filter-marital"><option value="">全部婚姻</option><option value="未婚">未婚</option><option value="离异">离异</option><option value="丧偶">丧偶</option></select>
-        <button class="reset-btn" onclick="resetFilters()">重置</button>
-      </div>
-      <div id="profile-grid" class="grid"></div>
-    </div>
-
-    <div id="my-page" class="form-page">
-      <div id="my-profile-section"></div>
-    </div>
-
-    <div id="form-page" class="form-page">
-      <h2 style="margin-bottom: 20px; text-align: center;">📝 登记档案</h2>
-      <form id="profile-form" onsubmit="saveProfile(event)">
-        <div class="form-group"><label>昵称 *</label><input type="text" id="nickname" required placeholder="请输入昵称" maxlength="20"></div>
-        <div class="form-group">
-          <label>性别 *</label>
-          <select id="gender" required><option value="">请选择</option><option value="male">男</option><option value="female">女</option></select>
-        </div>
-        <div class="form-group"><label>出生年份 *</label><input type="number" id="birthYear" required min="1950" max="2010" placeholder="如: 1990"></div>
-        <div class="form-group"><label>身高 (cm)</label><input type="number" id="height" min="140" max="220" placeholder="如: 170"></div>
-        <div class="form-group"><label>体重 (kg)</label><input type="number" id="weight" min="30" max="150" placeholder="如: 65"></div>
-        <div class="form-group">
-          <label>学历</label>
-          <select id="education"><option value="初中">初中</option><option value="高中/中专">高中/中专</option><option value="大专">大专</option><option value="本科" selected>本科</option><option value="硕士">硕士</option><option value="博士">博士</option></select>
-        </div>
-        <div class="form-group">
-          <label>所在地区</label>
-          <select id="region"><option value="北京">北京</option><option value="上海">上海</option><option value="广州">广州</option><option value="深圳">深圳</option><option value="成都">成都</option><option value="杭州">杭州</option><option value="武汉">武汉</option><option value="西安">西安</option><option value="南京">南京</option><option value="重庆">重庆</option><option value="苏州">苏州</option><option value="长沙">长沙</option><option value="天津">天津</option><option value="郑州">郑州</option><option value="东莞">东莞</option><option value="青岛">青岛</option><option value="沈阳">沈阳</option><option value="宁波">宁波</option><option value="昆明">昆明</option><option value="大连">大连</option></select>
-        </div>
-        <div class="form-group"><label>职业</label><input type="text" id="profession" placeholder="如: 工程师" maxlength="30"></div>
-        <div class="form-group">
-          <label>年收入</label>
-          <select id="income"><option value="5万以下">5万以下</option><option value="5-10万">5-10万</option><option value="10-20万">10-20万</option><option value="20-30万">20-30万</option><option value="30-50万">30-50万</option><option value="50-100万">50-100万</option><option value="100万以上">100万以上</option></select>
-        </div>
-        <div class="form-group">
-          <label>婚姻状况</label>
-          <select id="maritalStatus"><option value="未婚">未婚</option><option value="离异">离异</option><option value="丧偶">丧偶</option></select>
-        </div>
-        <div class="form-group"><label>个人简介</label><textarea id="bio" placeholder="介绍一下自己..." maxlength="500"></textarea></div>
-        <div class="form-group"><label>期望年龄范围</label><input type="text" id="expectAge" placeholder="如: 25-40岁"></div>
-        <div class="form-group"><label>期望地区</label><input type="text" id="expectRegion" placeholder="如: 北京、上海"></div>
-        <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="clearForm()">清空</button>
-          <button type="submit" class="btn btn-primary">保存档案</button>
-        </div>
-      </form>
-    </div>
-  </main>
-
-  <div id="modal" class="modal" onclick="closeModal(event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <button class="modal-close" onclick="closeModal()">×</button>
-      <div class="modal-header"><img id="modal-avatar" class="avatar" src="" alt=""></div>
       <div class="modal-body">
-        <h2 id="modal-name"></h2>
-        <p class="subtitle" id="modal-subtitle"></p>
-        <div class="info-grid">
-          <div class="info-item"><label>年龄</label><span id="modal-age"></span></div>
-          <div class="info-item"><label>身高</label><span id="modal-height"></span></div>
-          <div class="info-item"><label>体重</label><span id="modal-weight"></span></div>
-          <div class="info-item"><label>学历</label><span id="modal-education"></span></div>
-          <div class="info-item"><label>地区</label><span id="modal-region"></span></div>
-          <div class="info-item"><label>职业</label><span id="modal-profession"></span></div>
-          <div class="info-item"><label>年收入</label><span id="modal-income"></span></div>
-          <div class="info-item"><label>婚姻</label><span id="modal-marital"></span></div>
-          <div class="info-item"><label>生肖</label><span id="modal-zodiac"></span></div>
-          <div class="info-item"><label>血型</label><span id="modal-blood"></span></div>
-        </div>
-        <div class="section">
-          <h4>性格特点</h4>
-          <div id="modal-personality" class="hobby-tags"></div>
-        </div>
-        <div class="section">
-          <h4>兴趣爱好</h4>
-          <div id="modal-hobbies" class="hobby-tags"></div>
-        </div>
-        <div class="section">
-          <h4>个人简介</h4>
-          <p id="modal-bio" style="color:#666; line-height:1.6;"></p>
-        </div>
-        <div class="section">
-          <h4>期望对象</h4>
-          <div id="modal-expect" style="color:#666;"></div>
-        </div>
+        <form id="memberForm">
+          <div class="form-group">
+            <label>姓名 *</label>
+            <input type="text" id="name" required placeholder="请输入姓名">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>性别 *</label>
+              <select id="gender" required>
+                <option value="male">男</option>
+                <option value="female">女</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>年龄 *</label>
+              <input type="number" id="age" required min="18" max="60" placeholder="24">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>身高(cm) *</label>
+              <input type="number" id="height" required min="150" max="200" placeholder="170">
+            </div>
+            <div class="form-group">
+              <label>所在城市 *</label>
+              <select id="city" required>
+                <option value="">请选择</option>
+                <option value="北京">北京</option>
+                <option value="上海">上海</option>
+                <option value="广州">广州</option>
+                <option value="深圳">深圳</option>
+                <option value="杭州">杭州</option>
+                <option value="南京">南京</option>
+                <option value="武汉">武汉</option>
+                <option value="成都">成都</option>
+                <option value="重庆">重庆</option>
+                <option value="西安">西安</option>
+                <option value="苏州">苏州</option>
+                <option value="天津">天津</option>
+                <option value="长沙">长沙</option>
+                <option value="郑州">郑州</option>
+                <option value="其他">其他</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>形婚目的 *</label>
+            <select id="purpose" required>
+              <option value="">请选择</option>
+              <option value="形婚">形婚</option>
+              <option value="恋爱">恋爱</option>
+              <option value="结婚">结婚</option>
+              <option value="朋友">朋友</option>
+              <option value="形婚/恋爱">形婚/恋爱</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>个人简介</label>
+            <textarea id="intro" rows="3" placeholder="简单介绍一下自己..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" id="cancelBtn">取消</button>
+        <button type="button" class="btn-submit" id="submitBtn">提交登记</button>
       </div>
     </div>
   </div>
 
   <script>
-    const DEMO_DATA = [{"id":1,"nickname":"杜秀","gender":"female","birthYear":1993,"age":32,"height":169,"weight":78,"education":"初中","region":"北京","profession":"程序员","income":"5-10万","maritalStatus":"未婚","personality":"温和体贴","hobbies":["游戏","运动健身","登山"],"zodiac":"鸡","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9D%9C%E7%A7%80","bio":"这个人很懒，什么都没写...","expectAge":"34-56岁","expectRegion":"同省","expectIncome":"不限","registeredAt":"2026-04-30","views":12,"featured":false},{"id":2,"nickname":"夏亮","gender":"male","birthYear":1992,"age":33,"height":179,"weight":91,"education":"初中","region":"成都","profession":"律师","income":"100万以上","maritalStatus":"离异","personality":"幽默风趣","hobbies":["绘画","宠物","园艺"],"zodiac":"猪","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%A4%8F%E4%BA%AE","bio":"这个人很懒，什么都没写...","expectAge":"40-65岁","expectRegion":"同省","expectIncome":"5-10万","registeredAt":"2026-01-22","views":176,"featured":true},{"id":3,"nickname":"侯慧","gender":"female","birthYear":1981,"age":44,"height":165,"weight":42,"education":"博士","region":"沈阳","profession":"教练","income":"100万以上","maritalStatus":"丧偶","personality":"温和体贴","hobbies":["烹饪","绘画","游泳"],"zodiac":"蛇","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E4%BE%AF%E6%85%A7","bio":"这个人很懒，什么都没写...","expectAge":"23-57岁","expectRegion":"广州","expectIncome":"20-30万","registeredAt":"2025-10-15","views":61,"featured":false},{"id":4,"nickname":"潘成","gender":"male","birthYear":2003,"age":22,"height":165,"weight":95,"education":"大专","region":"大连","profession":"护士","income":"5万以下","maritalStatus":"未婚","personality":"完美主义","hobbies":["烹饪","音乐","旅游"],"zodiac":"虎","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E6%BD%98%E6%88%90","bio":"这个人很懒，什么都没写...","expectAge":"39-51岁","expectRegion":"上海","expectIncome":"面议","registeredAt":"2026-04-12","views":491,"featured":false},{"id":5,"nickname":"田怡","gender":"female","birthYear":1989,"age":36,"height":158,"weight":47,"education":"博士","region":"沈阳","profession":"行政","income":"30-50万","maritalStatus":"离异","personality":"内向安静","hobbies":["美食","阅读"],"zodiac":"兔","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E7%94%B0%E6%80%A1","bio":"这个人很懒，什么都没写...","expectAge":"24-49岁","expectRegion":"同省","expectIncome":"20-30万","registeredAt":"2026-04-06","views":249,"featured":false},{"id":6,"nickname":"姚军","gender":"male","birthYear":1977,"age":48,"height":183,"weight":65,"education":"硕士","region":"天津","profession":"教练","income":"20-30万","maritalStatus":"离异","personality":"活泼外向","hobbies":["游泳","登山","旅游"],"zodiac":"猪","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%A7%9A%E5%86%9B","bio":"这个人很懒，什么都没写...","expectAge":"22-48岁","expectRegion":"广州","expectIncome":"10-20万","registeredAt":"2026-02-26","views":378,"featured":false},{"id":7,"nickname":"邓丽","gender":"female","birthYear":1985,"age":40,"height":179,"weight":69,"education":"大专","region":"成都","profession":"企业主","income":"5万以下","maritalStatus":"未婚","personality":"开朗乐观","hobbies":["旅游","美食","音乐"],"zodiac":"鼠","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E9%82%93%E4%B8%BD","bio":"这个人很懒，什么都没写...","expectAge":"24-59岁","expectRegion":"北京","expectIncome":"20-30万","registeredAt":"2025-11-25","views":228,"featured":false},{"id":8,"nickname":"郭航","gender":"male","birthYear":1976,"age":49,"height":186,"weight":78,"education":"硕士","region":"东莞","profession":"工程师","income":"面议","maritalStatus":"未婚","personality":"幽默风趣","hobbies":["书法","登山","钓鱼"],"zodiac":"龙","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E9%83%AD%E8%88%AA","bio":"这个人很懒，什么都没写...","expectAge":"45-64岁","expectRegion":"广州","expectIncome":"30-50万","registeredAt":"2025-08-23","views":37,"featured":false},{"id":9,"nickname":"薛静","gender":"female","birthYear":1991,"age":34,"height":165,"weight":70,"education":"大专","region":"长沙","profession":"律师","income":"5万以下","maritalStatus":"未婚","personality":"稳重成熟","hobbies":["园艺","登山","跳舞"],"zodiac":"龙","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E8%96%9B%E9%9D%99","bio":"这个人很懒，什么都没写...","expectAge":"35-58岁","expectRegion":"同省","expectIncome":"10-20万","registeredAt":"2026-01-15","views":164,"featured":true},{"id":10,"nickname":"卢晨","gender":"male","birthYear":1979,"age":46,"height":163,"weight":101,"education":"高中/中专","region":"北京","profession":"个体","income":"30-50万","maritalStatus":"丧偶","personality":"真诚直接","hobbies":["游戏","钓鱼","瑜伽"],"zodiac":"猪","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%8D%A2%E6%99%A8","bio":"这个人很懒，什么都没写...","expectAge":"31-52岁","expectRegion":"同省","expectIncome":"不限","registeredAt":"2025-11-04","views":220,"featured":true},{"id":11,"nickname":"石君","gender":"female","birthYear":1975,"age":50,"height":154,"weight":45,"education":"博士","region":"东莞","profession":"行政","income":"50-100万","maritalStatus":"丧偶","personality":"开朗乐观","hobbies":["运动健身","书法","游戏"],"zodiac":"龙","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E7%9F%B3%E5%90%9B","bio":"这个人很懒，什么都没写...","expectAge":"35-53岁","expectRegion":"广州","expectIncome":"面议","registeredAt":"2025-11-23","views":468,"featured":false},{"id":12,"nickname":"梁杰","gender":"male","birthYear":1979,"age":46,"height":171,"weight":109,"education":"大专","region":"沈阳","profession":"金融从业者","income":"面议","maritalStatus":"丧偶","personality":"急性子","hobbies":["音乐","瑜伽","摄影"],"zodiac":"猪","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E6%A2%81%E6%9D%B0","bio":"这个人很懒，什么都没写...","expectAge":"37-53岁","expectRegion":"北京","expectIncome":"不限","registeredAt":"2025-11-15","views":158,"featured":false},{"id":13,"nickname":"钟娥","gender":"female","birthYear":1998,"age":27,"height":175,"weight":54,"education":"大专","region":"南京","profession":"医生","income":"30-50万","maritalStatus":"丧偶","personality":"开朗乐观","hobbies":["阅读","摄影","收藏"],"zodiac":"羊","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E9%92%9F%E5%A8%A5","bio":"这个人很懒，什么都没写...","expectAge":"22-58岁","expectRegion":"北京","expectIncome":"面议","registeredAt":"2025-12-05","views":373,"featured":false},{"id":14,"nickname":"黄刚","gender":"male","birthYear":1986,"age":39,"height":181,"weight":62,"education":"初中","region":"沈阳","profession":"企业主","income":"面议","maritalStatus":"离异","personality":"随和型","hobbies":["登山","瑜伽"],"zodiac":"蛇","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E9%BB%84%E5%88%9A","bio":"这个人很懒，什么都没写...","expectAge":"37-57岁","expectRegion":"不限","expectIncome":"20-30万","registeredAt":"2025-08-12","views":11,"featured":true},{"id":15,"nickname":"王萍","gender":"female","birthYear":1998,"age":27,"height":154,"weight":74,"education":"高中/中专","region":"深圳","profession":"程序员","income":"面议","maritalStatus":"未婚","personality":"理性独立","hobbies":["游戏","园艺","钓鱼"],"zodiac":"狗","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E7%8E%8B%E8%90%8D","bio":"这个人很懒，什么都没写...","expectAge":"42-57岁","expectRegion":"北京","expectIncome":"100万以上","registeredAt":"2025-12-12","views":28,"featured":false},{"id":16,"nickname":"郝国","gender":"male","birthYear":2004,"age":21,"height":167,"weight":62,"education":"本科","region":"宁波","profession":"个体","income":"5万以下","maritalStatus":"未婚","personality":"随和型","hobbies":["绘画","书法","游戏"],"zodiac":"羊","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E9%83%9D%E5%9B%BD","bio":"这个人很懒，什么都没写...","expectAge":"23-50岁","expectRegion":"上海","expectIncome":"30-50万","registeredAt":"2026-02-01","views":468,"featured":false},{"id":17,"nickname":"宋英","gender":"female","birthYear":1990,"age":35,"height":164,"weight":67,"education":"初中","region":"成都","profession":"个体","income":"20-30万","maritalStatus":"离异","personality":"急性子","hobbies":["摄影","音乐","书法"],"zodiac":"猴","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%AE%8B%E8%8B%B1","bio":"这个人很懒，什么都没写...","expectAge":"22-58岁","expectRegion":"不限","expectIncome":"30-50万","registeredAt":"2026-03-22","views":387,"featured":false},{"id":18,"nickname":"曾强","gender":"male","birthYear":1988,"age":37,"height":175,"weight":72,"education":"本科","region":"广州","profession":"程序员","income":"30-50万","maritalStatus":"未婚","personality":"理性独立","hobbies":["游戏","阅读","跑步"],"zodiac":"龙","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9B%BE%E5%BC%BA","bio":"这个人很懒，什么都没写...","expectAge":"25-40岁","expectRegion":"广州","expectIncome":"20-40万","registeredAt":"2026-05-01","views":156,"featured":true},{"id":19,"nickname":"何琳","gender":"female","birthYear":1995,"age":30,"height":162,"weight":52,"education":"硕士","region":"上海","profession":"教师","income":"15-20万","maritalStatus":"未婚","personality":"温和体贴","hobbies":["阅读","音乐","旅行"],"zodiac":"猪","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E4%BD%95%E7%90%B3","bio":"这个人很懒，什么都没写...","expectAge":"28-45岁","expectRegion":"上海","expectIncome":"不限","registeredAt":"2026-02-15","views":203,"featured":false},{"id":20,"nickname":"谢伟","gender":"male","birthYear":1985,"age":40,"height":178,"weight":80,"education":"本科","region":"深圳","profession":"企业主","income":"50-100万","maritalStatus":"离异","personality":"稳重成熟","hobbies":["高尔夫","品酒","收藏"],"zodiac":"虎","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E8%B0%9D%E4%BC%9F","bio":"这个人很懒，什么都没写...","expectAge":"28-45岁","expectRegion":"深圳","expectIncome":"20万以上","registeredAt":"2025-12-20","views":312,"featured":true},{"id":21,"nickname":"周莉","gender":"female","birthYear":1992,"age":33,"height":160,"weight":50,"education":"本科","region":"成都","profession":"护士","income":"10-15万","maritalStatus":"未婚","personality":"开朗乐观","hobbies":["烹饪","瑜伽","看电影"],"zodiac":"蛇","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%91%A8%E8%8E%89","bio":"这个人很懒，什么都没写...","expectAge":"28-48岁","expectRegion":"成都","expectIncome":"10万以上","registeredAt":"2026-01-10","views":89,"featured":false},{"id":22,"nickname":"吴磊","gender":"male","birthYear":1993,"age":32,"height":182,"weight":75,"education":"大专","region":"武汉","profession":"销售","income":"20-30万","maritalStatus":"未婚","personality":"幽默风趣","hobbies":["篮球","游戏","唱歌"],"zodiac":"鸡","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%90%B4%E7%A3%8A","bio":"这个人很懒，什么都没写...","expectAge":"24-38岁","expectRegion":"武汉","expectIncome":"不限","registeredAt":"2026-03-05","views":145,"featured":false},{"id":23,"nickname":"徐敏","gender":"female","birthYear":1987,"age":38,"height":158,"weight":55,"education":"高中/中专","region":"杭州","profession":"行政","income":"8-12万","maritalStatus":"离异","personality":"内向安静","hobbies":["园艺","手工","阅读"],"zodiac":"兔","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%BE%90%E6%95%8F","bio":"这个人很懒，什么都没写...","expectAge":"32-50岁","expectRegion":"杭州","expectIncome":"不限","registeredAt":"2025-11-30","views":67,"featured":false},{"id":24,"nickname":"孙浩","gender":"male","birthYear":1991,"age":34,"height":176,"weight":78,"education":"硕士","region":"南京","profession":"工程师","income":"25-35万","maritalStatus":"未婚","personality":"理性独立","hobbies":["摄影","旅行","跑步"],"zodiac":"羊","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%AD%99%E6%B5%AA","bio":"这个人很懒，什么都没写...","expectAge":"26-40岁","expectRegion":"南京","expectIncome":"15万以上","registeredAt":"2026-02-28","views":198,"featured":false},{"id":25,"nickname":"胡燕","gender":"female","birthYear":1994,"age":31,"height":165,"weight":53,"education":"本科","region":"西安","profession":"会计","income":"12-18万","maritalStatus":"未婚","personality":"温和体贴","hobbies":["电影","音乐","旅游"],"zodiac":"狗","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E8%83%A1%E7%87%95","bio":"这个人很懒，什么都没写...","expectAge":"27-42岁","expectRegion":"西安","expectIncome":"不限","registeredAt":"2026-04-18","views":234,"featured":true},{"id":26,"nickname":"朱俊","gender":"male","birthYear":1989,"age":36,"height":180,"weight":82,"education":"本科","region":"苏州","profession":"设计师","income":"20-28万","maritalStatus":"未婚","personality":"活泼外向","hobbies":["绘画","音乐","展览"],"zodiac":"蛇","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9C%B1%E4%BF%8A","bio":"这个人很懒，什么都没写...","expectAge":"25-38岁","expectRegion":"苏州","expectIncome":"15万以上","registeredAt":"2025-10-08","views":167,"featured":false},{"id":27,"nickname":"高婷","gender":"female","birthYear":1996,"age":29,"height":163,"weight":48,"education":"本科","region":"长沙","profession":"市场策划","income":"10-15万","maritalStatus":"未婚","personality":"活泼外向","hobbies":["跳舞","唱歌","聚会"],"zodiac":"鼠","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E9%AB%98%E5%A9%B7","bio":"这个人很懒，什么都没写...","expectAge":"26-40岁","expectRegion":"长沙","expectIncome":"不限","registeredAt":"2026-05-10","views":289,"featured":false},{"id":28,"nickname":"林涛","gender":"male","birthYear":1986,"age":39,"height":177,"weight":85,"education":"博士","region":"天津","profession":"医生","income":"30-50万","maritalStatus":"未婚","personality":"稳重成熟","hobbies":["阅读","下棋","书法"],"zodiac":"虎","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9E%97%E6%B6%85","bio":"这个人很懒，什么都没写...","expectAge":"28-48岁","expectRegion":"天津","expectIncome":"20万以上","registeredAt":"2025-09-15","views":412,"featured":true},{"id":29,"nickname":"杨玲","gender":"female","birthYear":1993,"age":32,"height":161,"weight":51,"education":"硕士","region":"郑州","profession":"律师","income":"20-30万","maritalStatus":"未婚","personality":"理性独立","hobbies":["阅读","旅行","摄影"],"zodiac":"鸡","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9D%A8%E7%8E%9F","bio":"这个人很懒，什么都没写...","expectAge":"28-45岁","expectRegion":"郑州","expectIncome":"不限","registeredAt":"2026-01-25","views":178,"featured":false},{"id":30,"nickname":"赵宇","gender":"male","birthYear":1990,"age":35,"height":175,"weight":73,"education":"本科","region":"青岛","profession":"金融从业者","income":"25-40万","maritalStatus":"未婚","personality":"幽默风趣","hobbies":["篮球","游戏","旅行"],"zodiac":"马","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E8%B5%B5%E5%AE%87","bio":"这个人很懒，什么都没写...","expectAge":"25-40岁","expectRegion":"青岛","expectIncome":"不限","registeredAt":"2026-03-12","views":223,"featured":false},{"id":31,"nickname":"黄莉","gender":"female","birthYear":1988,"age":37,"height":159,"weight":54,"education":"本科","region":"东莞","profession":"人力资源","income":"15-22万","maritalStatus":"离异","personality":"温和体贴","hobbies":["瑜伽","烹饪","阅读"],"zodiac":"龙","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E9%BB%84%E8%8E%89","bio":"这个人很懒，什么都没写...","expectAge":"30-48岁","expectRegion":"东莞","expectIncome":"不限","registeredAt":"2025-08-20","views":134,"featured":false},{"id":32,"nickname":"周勇","gender":"male","birthYear":1987,"age":38,"height":179,"weight":80,"education":"大专","region":"沈阳","profession":"个体","income":"15-25万","maritalStatus":"离异","personality":"真诚直接","hobbies":["钓鱼","园艺","烹饪"],"zodiac":"羊","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%91%A8%E5%8B%87","bio":"这个人很懒，什么都没写...","expectAge":"28-48岁","expectRegion":"沈阳","expectIncome":"不限","registeredAt":"2025-12-01","views":98,"featured":false},{"id":33,"nickname":"吴娟","gender":"female","birthYear":1995,"age":30,"height":164,"weight":52,"education":"本科","region":"宁波","profession":"设计师","income":"12-18万","maritalStatus":"未婚","personality":"开朗乐观","hobbies":["绘画","展览","旅游"],"zodiac":"猪","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%90%B4%E5%A8%9F","bio":"这个人很懒，什么都没写...","expectAge":"26-40岁","expectRegion":"宁波","expectIncome":"不限","registeredAt":"2026-02-20","views":256,"featured":false},{"id":34,"nickname":"徐杰","gender":"male","birthYear":1992,"age":33,"height":174,"weight":76,"education":"硕士","region":"昆明","profession":"工程师","income":"22-32万","maritalStatus":"未婚","personality":"内向安静","hobbies":["阅读","音乐","旅行"],"zodiac":"猴","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%BE%90%E6%9D%B0","bio":"这个人很懒，什么都没写...","expectAge":"25-40岁","expectRegion":"昆明","expectIncome":"不限","registeredAt":"2026-04-02","views":187,"featured":false},{"id":35,"nickname":"孙芳","gender":"female","birthYear":1991,"age":34,"height":162,"weight":50,"education":"本科","region":"大连","profession":"教师","income":"10-15万","maritalStatus":"未婚","personality":"温和体贴","hobbies":["阅读","音乐","旅行"],"zodiac":"蛇","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%AD%99%E8%8A%B3","bio":"这个人很懒，什么都没写...","expectAge":"27-45岁","expectRegion":"大连","expectIncome":"不限","registeredAt":"2026-01-18","views":145,"featured":false},{"id":36,"nickname":"胡军","gender":"male","birthYear":1985,"age":40,"height":178,"weight":82,"education":"高中/中专","region":"北京","profession":"销售","income":"20-40万","maritalStatus":"未婚","personality":"活泼外向","hobbies":["篮球","唱歌","聚会"],"zodiac":"牛","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E8%83%A1%E5%86%9B","bio":"这个人很懒，什么都没写...","expectAge":"28-45岁","expectRegion":"北京","expectIncome":"不限","registeredAt":"2025-11-12","views":267,"featured":false},{"id":37,"nickname":"朱静","gender":"female","birthYear":1989,"age":36,"height":160,"weight":53,"education":"大专","region":"上海","profession":"会计","income":"12-18万","maritalStatus":"离异","personality":"理性独立","hobbies":["瑜伽","烹饪","旅游"],"zodiac":"兔","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9C%B1%E9%9D%99","bio":"这个人很懒，什么都没写...","expectAge":"30-50岁","expectRegion":"上海","expectIncome":"不限","registeredAt":"2025-10-25","views":189,"featured":false},{"id":38,"nickname":"李强","gender":"male","birthYear":1993,"age":32,"height":181,"weight":77,"education":"本科","region":"广州","profession":"程序员","income":"28-40万","maritalStatus":"未婚","personality":"幽默风趣","hobbies":["游戏","篮球","音乐"],"zodiac":"鸡","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9D%8E%E5%BC%BA","bio":"这个人很懒，什么都没写...","expectAge":"25-38岁","expectRegion":"广州","expectIncome":"不限","registeredAt":"2026-03-28","views":345,"featured":true},{"id":39,"nickname":"刘霞","gender":"female","birthYear":1986,"age":39,"height":158,"weight":55,"education":"硕士","region":"深圳","profession":"医生","income":"30-45万","maritalStatus":"未婚","personality":"稳重成熟","hobbies":["阅读","旅行","摄影"],"zodiac":"虎","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%88%98%E9%9C%9E","bio":"这个人很懒，什么都没写...","expectAge":"32-50岁","expectRegion":"深圳","expectIncome":"20万以上","registeredAt":"2025-09-08","views":234,"featured":false},{"id":40,"nickname":"陈伟","gender":"male","birthYear":1988,"age":37,"height":176,"weight":79,"education":"本科","region":"成都","profession":"企业主","income":"30-50万","maritalStatus":"未婚","personality":"随和型","hobbies":["高尔夫","品酒","收藏"],"zodiac":"龙","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E9%99%88%E4%BC%9F","bio":"这个人很懒，什么都没写...","expectAge":"28-48岁","expectRegion":"成都","expectIncome":"不限","registeredAt":"2025-12-15","views":456,"featured":true},{"id":41,"nickname":"张燕","gender":"female","birthYear":1994,"age":31,"height":163,"weight":50,"education":"本科","region":"杭州","profession":"市场策划","income":"12-18万","maritalStatus":"未婚","personality":"活泼外向","hobbies":["跳舞","音乐","旅行"],"zodiac":"狗","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%BC%A0%E7%87%95","bio":"这个人很懒，什么都没写...","expectAge":"26-42岁","expectRegion":"杭州","expectIncome":"不限","registeredAt":"2026-04-25","views":178,"featured":false},{"id":42,"nickname":"刘波","gender":"male","birthYear":1990,"age":35,"height":177,"weight":74,"education":"大专","region":"武汉","profession":"销售","income":"18-28万","maritalStatus":"未婚","personality":"开朗乐观","hobbies":["篮球","游戏","唱歌"],"zodiac":"马","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%88%98%E6%B3%A2","bio":"这个人很懒，什么都没写...","expectAge":"25-40岁","expectRegion":"武汉","expectIncome":"不限","registeredAt":"2026-02-08","views":156,"featured":false},{"id":43,"nickname":"李敏","gender":"female","birthYear":1987,"age":38,"height":161,"weight":54,"education":"高中/中专","region":"西安","profession":"行政","income":"8-12万","maritalStatus":"离异","personality":"内向安静","hobbies":["园艺","手工","阅读"],"zodiac":"蛇","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9D%8E%E6%95%8F","bio":"这个人很懒，什么都没写...","expectAge":"32-50岁","expectRegion":"西安","expectIncome":"不限","registeredAt":"2025-11-18","views":89,"featured":false},{"id":44,"nickname":"王建","gender":"male","birthYear":1991,"age":34,"height":175,"weight":76,"education":"硕士","region":"南京","profession":"工程师","income":"25-35万","maritalStatus":"未婚","personality":"理性独立","hobbies":["摄影","旅行","跑步"],"zodiac":"羊","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E7%8E%8B%E5%BB%BA","bio":"这个人很懒，什么都没写...","expectAge":"26-40岁","expectRegion":"南京","expectIncome":"15万以上","registeredAt":"2026-03-15","views":234,"featured":false},{"id":45,"nickname":"赵琳","gender":"female","birthYear":1995,"age":30,"height":164,"weight":51,"education":"本科","region":"苏州","profession":"会计","income":"12-18万","maritalStatus":"未婚","personality":"温和体贴","hobbies":["电影","音乐","旅游"],"zodiac":"猪","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E8%B5%B5%E7%90%B3","bio":"这个人很懒，什么都没写...","expectAge":"27-42岁","expectRegion":"苏州","expectIncome":"不限","registeredAt":"2026-05-05","views":267,"featured":true},{"id":46,"nickname":"黄磊","gender":"male","birthYear":1986,"age":39,"height":179,"weight":81,"education":"本科","region":"长沙","profession":"设计师","income":"20-28万","maritalStatus":"未婚","personality":"活泼外向","hobbies":["绘画","音乐","展览"],"zodiac":"虎","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E9%BB%84%E7%A3%8A","bio":"这个人很懒，什么都没写...","expectAge":"28-48岁","expectRegion":"长沙","expectIncome":"不限","registeredAt":"2025-10-30","views":198,"featured":false},{"id":47,"nickname":"周婷","gender":"female","birthYear":1992,"age":33,"height":162,"weight":49,"education":"硕士","region":"天津","profession":"律师","income":"20-30万","maritalStatus":"未婚","personality":"理性独立","hobbies":["阅读","旅行","摄影"],"zodiac":"猴","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%91%A8%E5%A9%B7","bio":"这个人很懒，什么都没写...","expectAge":"28-45岁","expectRegion":"天津","expectIncome":"不限","registeredAt":"2026-01-30","views":145,"featured":false},{"id":48,"nickname":"吴涛","gender":"male","birthYear":1993,"age":32,"height":178,"weight":75,"education":"大专","region":"郑州","profession":"金融从业者","income":"20-30万","maritalStatus":"未婚","personality":"幽默风趣","hobbies":["篮球","游戏","旅行"],"zodiac":"鸡","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%90%B4%E6%B6%85","bio":"这个人很懒，什么都没写...","expectAge":"25-40岁","expectRegion":"郑州","expectIncome":"不限","registeredAt":"2026-04-10","views":278,"featured":false},{"id":49,"nickname":"徐莉","gender":"female","birthYear":1989,"age":36,"height":160,"weight":53,"education":"本科","region":"青岛","profession":"人力资源","income":"15-22万","maritalStatus":"离异","personality":"温和体贴","hobbies":["瑜伽","烹饪","阅读"],"zodiac":"蛇","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%BE%90%E8%8E%89","bio":"这个人很懒，什么都没写...","expectAge":"30-48岁","expectRegion":"青岛","expectIncome":"不限","registeredAt":"2025-09-25","views":167,"featured":false},{"id":50,"nickname":"孙勇","gender":"male","birthYear":1988,"age":37,"height":176,"weight":80,"education":"高中/中专","region":"沈阳","profession":"个体","income":"15-25万","maritalStatus":"离异","personality":"真诚直接","hobbies":["钓鱼","园艺","烹饪"],"zodiac":"龙","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%AD%99%E5%8B%87","bio":"这个人很懒，什么都没写...","expectAge":"28-48岁","expectRegion":"沈阳","expectIncome":"不限","registeredAt":"2025-12-08","views":112,"featured":false},{"id":51,"nickname":"胡娟","gender":"female","birthYear":1996,"age":29,"height":165,"weight":50,"education":"本科","region":"宁波","profession":"设计师","income":"12-18万","maritalStatus":"未婚","personality":"开朗乐观","hobbies":["绘画","展览","旅游"],"zodiac":"鼠","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E8%83%A1%E5%A8%9F","bio":"这个人很懒，什么都没写...","expectAge":"26-40岁","expectRegion":"宁波","expectIncome":"不限","registeredAt":"2026-05-12","views":234,"featured":false},{"id":52,"nickname":"朱杰","gender":"male","birthYear":1990,"age":35,"height":180,"weight":77,"education":"硕士","region":"昆明","profession":"工程师","income":"25-35万","maritalStatus":"未婚","personality":"内向安静","hobbies":["阅读","音乐","旅行"],"zodiac":"马","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9C%B1%E6%9D%B0","bio":"这个人很懒，什么都没写...","expectAge":"26-42岁","expectRegion":"昆明","expectIncome":"不限","registeredAt":"2026-02-25","views":189,"featured":false},{"id":53,"nickname":"高芳","gender":"female","birthYear":1991,"age":34,"height":163,"weight":52,"education":"本科","region":"大连","profession":"教师","income":"10-15万","maritalStatus":"未婚","personality":"温和体贴","hobbies":["阅读","音乐","旅行"],"zodiac":"羊","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E9%AB%98%E8%8A%B3","bio":"这个人很懒，什么都没写...","expectAge":"27-45岁","expectRegion":"大连","expectIncome":"不限","registeredAt":"2026-01-22","views":156,"featured":false},{"id":54,"nickname":"林军","gender":"male","birthYear":1985,"age":40,"height":178,"weight":83,"education":"大专","region":"北京","profession":"销售","income":"25-40万","maritalStatus":"未婚","personality":"活泼外向","hobbies":["篮球","唱歌","聚会"],"zodiac":"牛","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9E%97%E5%86%9B","bio":"这个人很懒，什么都没写...","expectAge":"28-50岁","expectRegion":"北京","expectIncome":"不限","registeredAt":"2025-11-05","views":312,"featured":false},{"id":55,"nickname":"杨静","gender":"female","birthYear":1988,"age":37,"height":161,"weight":55,"education":"本科","region":"上海","profession":"会计","income":"15-20万","maritalStatus":"离异","personality":"理性独立","hobbies":["瑜伽","烹饪","旅游"],"zodiac":"龙","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9D%A8%E9%9D%99","bio":"这个人很懒，什么都没写...","expectAge":"30-50岁","expectRegion":"上海","expectIncome":"不限","registeredAt":"2025-10-18","views":198,"featured":false},{"id":56,"nickname":"赵强","gender":"male","birthYear":1992,"age":33,"height":182,"weight":78,"education":"本科","region":"广州","profession":"程序员","income":"30-42万","maritalStatus":"未婚","personality":"幽默风趣","hobbies":["游戏","篮球","音乐"],"zodiac":"猴","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E8%B5%B5%E5%BC%BA","bio":"这个人很懒，什么都没写...","expectAge":"25-40岁","expectRegion":"广州","expectIncome":"不限","registeredAt":"2026-03-20","views":389,"featured":true},{"id":57,"nickname":"黄霞","gender":"female","birthYear":1986,"age":39,"height":159,"weight":54,"education":"硕士","region":"深圳","profession":"医生","income":"32-48万","maritalStatus":"未婚","personality":"稳重成熟","hobbies":["阅读","旅行","摄影"],"zodiac":"虎","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E9%BB%84%E9%9C%9E","bio":"这个人很懒，什么都没写...","expectAge":"32-52岁","expectRegion":"深圳","expectIncome":"20万以上","registeredAt":"2025-09-12","views":267,"featured":false},{"id":58,"nickname":"周伟","gender":"male","birthYear":1987,"age":38,"height":177,"weight":81,"education":"本科","region":"成都","profession":"企业主","income":"35-55万","maritalStatus":"未婚","personality":"随和型","hobbies":["高尔夫","品酒","收藏"],"zodiac":"兔","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%91%A8%E4%BC%9F","bio":"这个人很懒，什么都没写...","expectAge":"28-50岁","expectRegion":"成都","expectIncome":"不限","registeredAt":"2025-12-22","views":478,"featured":true},{"id":59,"nickname":"吴燕","gender":"female","birthYear":1994,"age":31,"height":164,"weight":51,"education":"本科","region":"杭州","profession":"市场策划","income":"14-20万","maritalStatus":"未婚","personality":"活泼外向","hobbies":["跳舞","音乐","旅行"],"zodiac":"狗","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%90%B4%E7%87%95","bio":"这个人很懒，什么都没写...","expectAge":"26-42岁","expectRegion":"杭州","expectIncome":"不限","registeredAt":"2026-04-28","views":198,"featured":false},{"id":60,"nickname":"徐波","gender":"male","birthYear":1989,"age":36,"height":176,"weight":75,"education":"大专","region":"武汉","profession":"销售","income":"20-30万","maritalStatus":"未婚","personality":"开朗乐观","hobbies":["篮球","游戏","唱歌"],"zodiac":"蛇","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%BE%90%E6%B3%A2","bio":"这个人很懒，什么都没写...","expectAge":"26-45岁","expectRegion":"武汉","expectIncome":"不限","registeredAt":"2026-02-12","views":167,"featured":false},{"id":61,"nickname":"孙敏","gender":"female","birthYear":1987,"age":38,"height":162,"weight":56,"education":"高中/中专","region":"西安","profession":"行政","income":"8-12万","maritalStatus":"离异","personality":"内向安静","hobbies":["园艺","手工","阅读"],"zodiac":"马","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%AD%99%E6%95%8F","bio":"这个人很懒，什么都没写...","expectAge":"32-52岁","expectRegion":"西安","expectIncome":"不限","registeredAt":"2025-11-28","views":98,"featured":false},{"id":62,"nickname":"胡建","gender":"male","birthYear":1990,"age":35,"height":174,"weight":77,"education":"硕士","region":"南京","profession":"工程师","income":"27-38万","maritalStatus":"未婚","personality":"理性独立","hobbies":["摄影","旅行","跑步"],"zodiac":"羊","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E8%83%A1%E5%BB%BA","bio":"这个人很懒，什么都没写...","expectAge":"26-42岁","expectRegion":"南京","expectIncome":"15万以上","registeredAt":"2026-03-18","views":245,"featured":false},{"id":63,"nickname":"朱琳","gender":"female","birthYear":1995,"age":30,"height":165,"weight":52,"education":"本科","region":"苏州","profession":"会计","income":"13-18万","maritalStatus":"未婚","personality":"温和体贴","hobbies":["电影","音乐","旅游"],"zodiac":"猪","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9C%B1%E7%90%B3","bio":"这个人很懒，什么都没写...","expectAge":"27-42岁","expectRegion":"苏州","expectIncome":"不限","registeredAt":"2026-05-08","views":289,"featured":true},{"id":64,"nickname":"李磊","gender":"male","birthYear":1985,"age":40,"height":180,"weight":82,"education":"本科","region":"长沙","profession":"设计师","income":"22-30万","maritalStatus":"未婚","personality":"活泼外向","hobbies":["绘画","音乐","展览"],"zodiac":"牛","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9D%8E%E7%A3%8A","bio":"这个人很懒，什么都没写...","expectAge":"28-50岁","expectRegion":"长沙","expectIncome":"不限","registeredAt":"2025-10-28","views":212,"featured":false},{"id":65,"nickname":"刘婷","gender":"female","birthYear":1991,"age":34,"height":163,"weight":50,"education":"硕士","region":"天津","profession":"律师","income":"22-32万","maritalStatus":"未婚","personality":"理性独立","hobbies":["阅读","旅行","摄影"],"zodiac":"羊","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%88%98%E5%A9%B7","bio":"这个人很懒，什么都没写...","expectAge":"28-48岁","expectRegion":"天津","expectIncome":"不限","registeredAt":"2026-02-02","views":167,"featured":false},{"id":66,"nickname":"陈涛","gender":"male","birthYear":1992,"age":33,"height":179,"weight":76,"education":"大专","region":"郑州","profession":"金融从业者","income":"22-32万","maritalStatus":"未婚","personality":"幽默风趣","hobbies":["篮球","游戏","旅行"],"zodiac":"猴","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E9%99%88%E6%B6%85","bio":"这个人很懒，什么都没写...","expectAge":"25-40岁","expectRegion":"郑州","expectIncome":"不限","registeredAt":"2026-04-15","views":298,"featured":false},{"id":67,"nickname":"张莉","gender":"female","birthYear":1988,"age":37,"height":161,"weight":55,"education":"本科","region":"青岛","profession":"人力资源","income":"16-24万","maritalStatus":"离异","personality":"温和体贴","hobbies":["瑜伽","烹饪","阅读"],"zodiac":"龙","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%BC%A0%E8%8E%89","bio":"这个人很懒，什么都没写...","expectAge":"30-50岁","expectRegion":"青岛","expectIncome":"不限","registeredAt":"2025-09-30","views":178,"featured":false},{"id":68,"nickname":"王勇","gender":"male","birthYear":1987,"age":38,"height":177,"weight":82,"education":"高中/中专","region":"沈阳","profession":"个体","income":"18-28万","maritalStatus":"离异","personality":"真诚直接","hobbies":["钓鱼","园艺","烹饪"],"zodiac":"兔","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E7%8E%8B%E5%8B%87","bio":"这个人很懒，什么都没写...","expectAge":"28-50岁","expectRegion":"沈阳","expectIncome":"不限","registeredAt":"2025-12-12","views":123,"featured":false},{"id":69,"nickname":"赵娟","gender":"female","birthYear":1996,"age":29,"height":166,"weight":51,"education":"本科","region":"宁波","profession":"设计师","income":"13-19万","maritalStatus":"未婚","personality":"开朗乐观","hobbies":["绘画","展览","旅游"],"zodiac":"鼠","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E8%B5%B5%E5%A8%9F","bio":"这个人很懒，什么都没写...","expectAge":"26-40岁","expectRegion":"宁波","expectIncome":"不限","registeredAt":"2026-05-15","views":256,"featured":false},{"id":70,"nickname":"黄杰","gender":"male","birthYear":1989,"age":36,"height":181,"weight":78,"education":"硕士","region":"昆明","profession":"工程师","income":"28-38万","maritalStatus":"未婚","personality":"内向安静","hobbies":["阅读","音乐","旅行"],"zodiac":"蛇","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E9%BB%84%E6%9D%B0","bio":"这个人很懒，什么都没写...","expectAge":"26-45岁","expectRegion":"昆明","expectIncome":"不限","registeredAt":"2026-03-02","views":201,"featured":false},{"id":71,"nickname":"周芳","gender":"female","birthYear":1990,"age":35,"height":164,"weight":53,"education":"本科","region":"大连","profession":"教师","income":"11-16万","maritalStatus":"未婚","personality":"温和体贴","hobbies":["阅读","音乐","旅行"],"zodiac":"马","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%91%A8%E8%8A%B3","bio":"这个人很懒，什么都没写...","expectAge":"27-48岁","expectRegion":"大连","expectIncome":"不限","registeredAt":"2026-01-28","views":167,"featured":false},{"id":72,"nickname":"吴军","gender":"male","birthYear":1984,"age":41,"height":179,"weight":84,"education":"大专","region":"北京","profession":"销售","income":"28-45万","maritalStatus":"未婚","personality":"活泼外向","hobbies":["篮球","唱歌","聚会"],"zodiac":"虎","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%90%B4%E5%86%9B","bio":"这个人很懒，什么都没写...","expectAge":"28-52岁","expectRegion":"北京","expectIncome":"不限","registeredAt":"2025-11-10","views":334,"featured":false},{"id":73,"nickname":"徐静","gender":"female","birthYear":1987,"age":38,"height":162,"weight":56,"education":"本科","region":"上海","profession":"会计","income":"16-22万","maritalStatus":"离异","personality":"理性独立","hobbies":["瑜伽","烹饪","旅游"],"zodiac":"龙","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%BE%90%E9%9D%99","bio":"这个人很懒，什么都没写...","expectAge":"30-52岁","expectRegion":"上海","expectIncome":"不限","registeredAt":"2025-10-22","views":212,"featured":false},{"id":74,"nickname":"孙强","gender":"male","birthYear":1991,"age":34,"height":183,"weight":79,"education":"本科","region":"广州","profession":"程序员","income":"32-45万","maritalStatus":"未婚","personality":"幽默风趣","hobbies":["游戏","篮球","音乐"],"zodiac":"羊","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%AD%99%E5%BC%BA","bio":"这个人很懒，什么都没写...","expectAge":"25-42岁","expectRegion":"广州","expectIncome":"不限","registeredAt":"2026-03-25","views":412,"featured":true},{"id":75,"nickname":"胡霞","gender":"female","birthYear":1985,"age":40,"height":160,"weight":55,"education":"硕士","region":"深圳","profession":"医生","income":"35-50万","maritalStatus":"未婚","personality":"稳重成熟","hobbies":["阅读","旅行","摄影"],"zodiac":"牛","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E8%83%A1%E9%9C%9E","bio":"这个人很懒，什么都没写...","expectAge":"32-55岁","expectRegion":"深圳","expectIncome":"22万以上","registeredAt":"2025-09-18","views":289,"featured":false},{"id":76,"nickname":"朱伟","gender":"male","birthYear":1986,"age":39,"height":178,"weight":83,"education":"本科","region":"成都","profession":"企业主","income":"38-58万","maritalStatus":"未婚","personality":"随和型","hobbies":["高尔夫","品酒","收藏"],"zodiac":"虎","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9C%B1%E4%BC%9F","bio":"这个人很懒，什么都没写...","expectAge":"28-52岁","expectRegion":"成都","expectIncome":"不限","registeredAt":"2025-12-28","views":512,"featured":true},{"id":77,"nickname":"高燕","gender":"female","birthYear":1993,"age":32,"height":165,"weight":52,"education":"本科","region":"杭州","profession":"市场策划","income":"15-22万","maritalStatus":"未婚","personality":"活泼外向","hobbies":["跳舞","音乐","旅行"],"zodiac":"鸡","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E9%AB%98%E7%87%95","bio":"这个人很懒，什么都没写...","expectAge":"26-45岁","expectRegion":"杭州","expectIncome":"不限","registeredAt":"2026-05-02","views":223,"featured":false},{"id":78,"nickname":"林波","gender":"male","birthYear":1988,"age":37,"height":177,"weight":76,"education":"大专","region":"武汉","profession":"销售","income":"22-32万","maritalStatus":"未婚","personality":"开朗乐观","hobbies":["篮球","游戏","唱歌"],"zodiac":"龙","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9E%97%E6%B3%A2","bio":"这个人很懒，什么都没写...","expectAge":"26-48岁","expectRegion":"武汉","expectIncome":"不限","registeredAt":"2026-02-18","views":178,"featured":false},{"id":79,"nickname":"杨敏","gender":"female","birthYear":1986,"age":39,"height":163,"weight":57,"education":"高中/中专","region":"西安","profession":"行政","income":"9-14万","maritalStatus":"离异","personality":"内向安静","hobbies":["园艺","手工","阅读"],"zodiac":"兔","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9D%A8%E6%95%8F","bio":"这个人很懒，什么都没写...","expectAge":"32-55岁","expectRegion":"西安","expectIncome":"不限","registeredAt":"2025-11-22","views":107,"featured":false},{"id":80,"nickname":"赵建","gender":"male","birthYear":1989,"age":36,"height":175,"weight":78,"education":"硕士","region":"南京","profession":"工程师","income":"30-40万","maritalStatus":"未婚","personality":"理性独立","hobbies":["摄影","旅行","跑步"],"zodiac":"蛇","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E8%B5%B5%E5%BB%BA","bio":"这个人很懒，什么都没写...","expectAge":"26-48岁","expectRegion":"南京","expectIncome":"18万以上","registeredAt":"2026-03-08","views":267,"featured":false},{"id":81,"nickname":"黄琳","gender":"female","birthYear":1994,"age":31,"height":166,"weight":53,"education":"本科","region":"苏州","profession":"会计","income":"14-20万","maritalStatus":"未婚","personality":"温和体贴","hobbies":["电影","音乐","旅游"],"zodiac":"狗","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E9%BB%84%E7%90%B3","bio":"这个人很懒，什么都没写...","expectAge":"27-45岁","expectRegion":"苏州","expectIncome":"不限","registeredAt":"2026-05-18","views":312,"featured":true},{"id":82,"nickname":"周磊","gender":"male","birthYear":1984,"age":41,"height":181,"weight":84,"education":"本科","region":"长沙","profession":"设计师","income":"25-35万","maritalStatus":"未婚","personality":"活泼外向","hobbies":["绘画","音乐","展览"],"zodiac":"牛","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%91%A8%E7%A3%8A","bio":"这个人很懒，什么都没写...","expectAge":"28-55岁","expectRegion":"长沙","expectIncome":"不限","registeredAt":"2025-10-15","views":234,"featured":false},{"id":83,"nickname":"吴婷","gender":"female","birthYear":1990,"age":35,"height":164,"weight":51,"education":"硕士","region":"天津","profession":"律师","income":"24-35万","maritalStatus":"未婚","personality":"理性独立","hobbies":["阅读","旅行","摄影"],"zodiac":"马","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%90%B4%E5%A9%B7","bio":"这个人很懒，什么都没写...","expectAge":"28-50岁","expectRegion":"天津","expectIncome":"不限","registeredAt":"2026-02-05","views":189,"featured":false},{"id":84,"nickname":"徐涛","gender":"male","birthYear":1991,"age":34,"height":180,"weight":77,"education":"大专","region":"郑州","profession":"金融从业者","income":"24-35万","maritalStatus":"未婚","personality":"幽默风趣","hobbies":["篮球","游戏","旅行"],"zodiac":"羊","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%BE%90%E6%B6%85","bio":"这个人很懒，什么都没写...","expectAge":"25-42岁","expectRegion":"郑州","expectIncome":"不限","registeredAt":"2026-04-20","views":312,"featured":false},{"id":85,"nickname":"孙莉","gender":"female","birthYear":1987,"age":38,"height":162,"weight":56,"education":"本科","region":"青岛","profession":"人力资源","income":"18-26万","maritalStatus":"离异","personality":"温和体贴","hobbies":["瑜伽","烹饪","阅读"],"zodiac":"龙","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%AD%99%E8%8E%89","bio":"这个人很懒，什么都没写...","expectAge":"30-52岁","expectRegion":"青岛","expectIncome":"不限","registeredAt":"2025-10-05","views":198,"featured":false},{"id":86,"nickname":"胡勇","gender":"male","birthYear":1986,"age":39,"height":178,"weight":83,"education":"高中/中专","region":"沈阳","profession":"个体","income":"20-30万","maritalStatus":"离异","personality":"真诚直接","hobbies":["钓鱼","园艺","烹饪"],"zodiac":"虎","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E8%83%A1%E5%8B%87","bio":"这个人很懒，什么都没写...","expectAge":"28-55岁","expectRegion":"沈阳","expectIncome":"不限","registeredAt":"2025-12-18","views":134,"featured":false},{"id":87,"nickname":"朱娟","gender":"female","birthYear":1995,"age":30,"height":167,"weight":52,"education":"本科","region":"宁波","profession":"设计师","income":"14-20万","maritalStatus":"未婚","personality":"开朗乐观","hobbies":["绘画","展览","旅游"],"zodiac":"猪","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9C%B1%E5%A8%9F","bio":"这个人很懒，什么都没写...","expectAge":"26-42岁","expectRegion":"宁波","expectIncome":"不限","registeredAt":"2026-05-20","views":278,"featured":false},{"id":88,"nickname":"高杰","gender":"male","birthYear":1988,"age":37,"height":182,"weight":79,"education":"硕士","region":"昆明","profession":"工程师","income":"30-42万","maritalStatus":"未婚","personality":"内向安静","hobbies":["阅读","音乐","旅行"],"zodiac":"龙","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E9%AB%98%E6%9D%B0","bio":"这个人很懒，什么都没写...","expectAge":"26-48岁","expectRegion":"昆明","expectIncome":"不限","registeredAt":"2026-03-05","views":223,"featured":false},{"id":89,"nickname":"林芳","gender":"female","birthYear":1989,"age":36,"height":165,"weight":54,"education":"本科","region":"大连","profession":"教师","income":"12-18万","maritalStatus":"未婚","personality":"温和体贴","hobbies":["阅读","音乐","旅行"],"zodiac":"蛇","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9E%97%E8%8A%B3","bio":"这个人很懒，什么都没写...","expectAge":"28-50岁","expectRegion":"大连","expectIncome":"不限","registeredAt":"2026-02-10","views":178,"featured":false},{"id":90,"nickname":"杨军","gender":"male","birthYear":1983,"age":42,"height":180,"weight":85,"education":"大专","region":"北京","profession":"销售","income":"30-50万","maritalStatus":"未婚","personality":"活泼外向","hobbies":["篮球","唱歌","聚会"],"zodiac":"鼠","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9D%A8%E5%86%9B","bio":"这个人很懒，什么都没写...","expectAge":"28-55岁","expectRegion":"北京","expectIncome":"不限","registeredAt":"2025-11-15","views":356,"featured":false},{"id":91,"nickname":"赵静","gender":"female","birthYear":1986,"age":39,"height":163,"weight":57,"education":"本科","region":"上海","profession":"会计","income":"18-25万","maritalStatus":"离异","personality":"理性独立","hobbies":["瑜伽","烹饪","旅游"],"zodiac":"虎","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E8%B5%B5%E9%9D%99","bio":"这个人很懒，什么都没写...","expectAge":"32-55岁","expectRegion":"上海","expectIncome":"不限","registeredAt":"2025-10-28","views":234,"featured":false},{"id":92,"nickname":"黄强","gender":"male","birthYear":1990,"age":35,"height":184,"weight":80,"education":"本科","region":"广州","profession":"程序员","income":"35-48万","maritalStatus":"未婚","personality":"幽默风趣","hobbies":["游戏","篮球","音乐"],"zodiac":"马","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E9%BB%84%E5%BC%BA","bio":"这个人很懒，什么都没写...","expectAge":"26-45岁","expectRegion":"广州","expectIncome":"不限","registeredAt":"2026-03-30","views":445,"featured":true},{"id":93,"nickname":"周霞","gender":"female","birthYear":1984,"age":41,"height":161,"weight":56,"education":"硕士","region":"深圳","profession":"医生","income":"38-55万","maritalStatus":"未婚","personality":"稳重成熟","hobbies":["阅读","旅行","摄影"],"zodiac":"牛","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%91%A8%E9%9C%9E","bio":"这个人很懒，什么都没写...","expectAge":"32-58岁","expectRegion":"深圳","expectIncome":"25万以上","registeredAt":"2025-09-22","views":312,"featured":false},{"id":94,"nickname":"吴伟","gender":"male","birthYear":1985,"age":40,"height":179,"weight":85,"education":"本科","region":"成都","profession":"企业主","income":"40-60万","maritalStatus":"未婚","personality":"随和型","hobbies":["高尔夫","品酒","收藏"],"zodiac":"虎","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%90%B4%E4%BC%9F","bio":"这个人很懒，什么都没写...","expectAge":"28-58岁","expectRegion":"成都","expectIncome":"不限","registeredAt":"2025-12-25","views":534,"featured":true},{"id":95,"nickname":"徐燕","gender":"female","birthYear":1992,"age":33,"height":167,"weight":53,"education":"本科","region":"杭州","profession":"市场策划","income":"16-24万","maritalStatus":"未婚","personality":"活泼外向","hobbies":["跳舞","音乐","旅行"],"zodiac":"猴","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E5%BE%90%E7%87%95","bio":"这个人很懒，什么都没写...","expectAge":"26-48岁","expectRegion":"杭州","expectIncome":"不限","registeredAt":"2026-05-08","views":245,"featured":false},{"id":96,"nickname":"孙波","gender":"male","birthYear":1987,"age":38,"height":178,"weight":77,"education":"大专","region":"武汉","profession":"销售","income":"25-38万","maritalStatus":"未婚","personality":"开朗乐观","hobbies":["篮球","游戏","唱歌"],"zodiac":"兔","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E5%AD%99%E6%B3%A2","bio":"这个人很懒，什么都没写...","expectAge":"28-50岁","expectRegion":"武汉","expectIncome":"不限","registeredAt":"2026-02-22","views":189,"featured":false},{"id":97,"nickname":"胡敏","gender":"female","birthYear":1985,"age":40,"height":164,"weight":58,"education":"高中/中专","region":"西安","profession":"行政","income":"10-15万","maritalStatus":"离异","personality":"内向安静","hobbies":["园艺","手工","阅读"],"zodiac":"蛇","bloodType":"AB","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E8%83%A1%E6%95%8F","bio":"这个人很懒，什么都没写...","expectAge":"32-58岁","expectRegion":"西安","expectIncome":"不限","registeredAt":"2025-11-28","views":116,"featured":false},{"id":98,"nickname":"朱建","gender":"male","birthYear":1988,"age":37,"height":176,"weight":79,"education":"硕士","region":"南京","profession":"工程师","income":"32-45万","maritalStatus":"未婚","personality":"理性独立","hobbies":["摄影","旅行","跑步"],"zodiac":"龙","bloodType":"B","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9C%B1%E5%BB%BA","bio":"这个人很懒，什么都没写...","expectAge":"28-50岁","expectRegion":"南京","expectIncome":"20万以上","registeredAt":"2026-03-12","views":289,"featured":false},{"id":99,"nickname":"高琳","gender":"female","birthYear":1993,"age":32,"height":168,"weight":54,"education":"本科","region":"苏州","profession":"会计","income":"15-22万","maritalStatus":"未婚","personality":"温和体贴","hobbies":["电影","音乐","旅游"],"zodiac":"鸡","bloodType":"A","avatar":"https://ui-avatars.com/api/?background=E91E63&color=fff&size=128&font-size=0.4&bold=true&name=%E9%AB%98%E7%90%B3","bio":"这个人很懒，什么都没写...","expectAge":"28-48岁","expectRegion":"苏州","expectIncome":"不限","registeredAt":"2026-05-15","views":334,"featured":true},{"id":100,"nickname":"林磊","gender":"male","birthYear":1983,"age":42,"height":182,"weight":86,"education":"本科","region":"长沙","profession":"设计师","income":"28-40万","maritalStatus":"未婚","personality":"活泼外向","hobbies":["绘画","音乐","展览"],"zodiac":"鼠","bloodType":"O","avatar":"https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&font-size=0.4&bold=true&name=%E6%9E%97%E7%A3%8A","bio":"这个人很懒，什么都没写...","expectAge":"28-58岁","expectRegion":"长沙","expectIncome":"不限","registeredAt":"2025-10-10","views":256,"featured":false}];
-
-    let profiles = [];
-    let myProfile = null;
-
-    function loadProfiles() {
-      const stored = localStorage.getItem('xinghun_profiles');
-      const myStored = localStorage.getItem('xinghun_my_profile');
-      if (stored) {
-        profiles = JSON.parse(stored);
-      } else {
-        profiles = [...DEMO_DATA];
-        localStorage.setItem('xinghun_profiles', JSON.stringify(profiles));
+    const STORAGE_KEY = 'xinghun_profiles';
+    const modal = document.getElementById('modal');
+    const fabBtn = document.getElementById('fabBtn');
+    const closeModal = document.getElementById('closeModal');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const memberForm = document.getElementById('memberForm');
+    const searchInput = document.getElementById('searchInput');
+    let currentFilter = 'all';
+    let profiles = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    
+    function render() {
+      const cards = document.getElementById('cards');
+      const counter = document.getElementById('counter');
+      let filtered = profiles;
+      
+      if (currentFilter !== 'all') {
+        filtered = profiles.filter(p => p.gender === currentFilter);
       }
-      if (myStored) {
-        myProfile = JSON.parse(myStored);
+      
+      const search = searchInput.value.toLowerCase();
+      if (search) {
+        filtered = filtered.filter(p => 
+          p.name.toLowerCase().includes(search) || 
+          p.city.toLowerCase().includes(search)
+        );
       }
-    }
-
-    function saveProfiles() {
-      localStorage.setItem('xinghun_profiles', JSON.stringify(profiles));
-    }
-
-    function getStats() {
-      const total = profiles.length;
-      const male = profiles.filter(p => p.gender === 'male').length;
-      const female = profiles.filter(p => p.gender === 'female').length;
-      document.getElementById('total-count').textContent = total;
-      document.getElementById('male-count').textContent = male;
-      document.getElementById('female-count').textContent = female;
-    }
-
-    function renderProfiles(filtered = profiles) {
-      const grid = document.getElementById('profile-grid');
+      
+      counter.textContent = filtered.length;
+      
       if (filtered.length === 0) {
-        grid.innerHTML = '<div class="no-results">暂无符合条件的档案</div>';
+        cards.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><p>暂无会员信息</p><p style="font-size:13px;margin-top:8px;">点击右下角"+"按钮添加</p></div>';
         return;
       }
-      grid.innerHTML = filtered.map(p => `
-        <div class="card" onclick="showModal(${p.id})">
+      
+      cards.innerHTML = filtered.map(p => `
+        <div class="card">
           <div class="card-header">
-            <img class="avatar" src="${p.avatar}" alt="${p.nickname}">
-            <span class="gender-badge">${p.gender === 'male' ? '♂' : '♀'}</span>
+            <div class="card-avatar" style="background: ${p.gender === 'male' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'}">
+              <img src="${p.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + p.id}" alt="${p.name}">
+            </div>
+            <div class="card-badge ${p.gender === 'female' ? 'female' : ''}">${p.gender === 'male' ? '男' : '女'}</div>
+            ${p.online ? '<div class="card-online"></div>' : ''}
           </div>
           <div class="card-body">
-            <h3>${p.nickname} <span class="age">${p.age || (2025 - p.birthYear)}岁</span></h3>
-            <div class="tags">
-              <span class="tag">${p.region || '未知地区'}</span>
-              <span class="tag">${p.education || '学历未知'}</span>
-              <span class="tag ${p.gender === 'male' ? 'blue' : 'pink'}">${p.profession || '职业未知'}</span>
+            <div class="card-name">${p.name} ${p.verified ? '<span class="verified">✓</span>' : ''}</div>
+            <div class="card-tags">
+              <span class="tag ${p.gender === 'female' ? 'female' : ''}">${p.age}岁</span>
+              <span class="tag ${p.gender === 'female' ? 'female' : ''}">${p.height}cm</span>
+              <span class="tag ${p.gender === 'female' ? 'female' : ''}">${p.city}</span>
             </div>
-            <div class="tags">
-              ${(p.hobbies || []).slice(0, 3).map(h => `<span class="tag">${h}</span>`).join('')}
+            <div class="card-info">
+              <div>📌 ${p.purpose}</div>
+              <div>${p.intro || '暂无简介'}</div>
             </div>
           </div>
           <div class="card-footer">
-            <span>浏览 ${p.views || 0}</span>
-            <span>${p.registeredAt || ''}</span>
+            <span class="card-time">${p.lastActive ? new Date(p.lastActive).toLocaleDateString('zh-CN') : ''}</span>
+            <button class="card-btn">联系TA</button>
           </div>
         </div>
       `).join('');
     }
-
-    function showModal(id) {
-      const p = profiles.find(prof => prof.id === id);
-      if (!p) return;
-      document.getElementById('modal-avatar').src = p.avatar;
-      document.getElementById('modal-name').textContent = p.nickname;
-      document.getElementById('modal-subtitle').textContent = `${p.region || ''} · ${p.profession || ''} · ${p.age || (2025 - p.birthYear)}岁`;
-      document.getElementById('modal-age').textContent = (p.age || (2025 - p.birthYear)) + '岁';
-      document.getElementById('modal-height').textContent = p.height ? p.height + 'cm' : '-';
-      document.getElementById('modal-weight').textContent = p.weight ? p.weight + 'kg' : '-';
-      document.getElementById('modal-education').textContent = p.education || '-';
-      document.getElementById('modal-region').textContent = p.region || '-';
-      document.getElementById('modal-profession').textContent = p.profession || '-';
-      document.getElementById('modal-income').textContent = p.income || '-';
-      document.getElementById('modal-marital').textContent = p.maritalStatus || '-';
-      document.getElementById('modal-zodiac').textContent = p.zodiac || '-';
-      document.getElementById('modal-blood').textContent = p.bloodType ? p.bloodType + '型' : '-';
-      document.getElementById('modal-personality').innerHTML = p.personality ? `<span class="tag">${p.personality}</span>` : '-';
-      document.getElementById('modal-hobbies').innerHTML = (p.hobbies || []).map(h => `<span class="tag">${h}</span>`).join('') || '-';
-      document.getElementById('modal-bio').textContent = p.bio || '暂无简介';
-      document.getElementById('modal-expect').innerHTML = `年龄: ${p.expectAge || '-'} | 地区: ${p.expectRegion || '-'} | 收入: ${p.expectIncome || '-'}`;
-      document.getElementById('modal').classList.add('active');
-      p.views = (p.views || 0) + 1;
-      saveProfiles();
-    }
-
-    function closeModal(e) {
-      if (e && e.target !== document.getElementById('modal')) return;
-      document.getElementById('modal').classList.remove('active');
-    }
-
-    function showTab(tab) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      event.target.classList.add('active');
-      document.querySelectorAll('.form-page').forEach(p => p.classList.remove('active'));
-      if (tab === 'browse') {
-        document.getElementById('browse-page').classList.add('active');
-      } else if (tab === 'my') {
-        document.getElementById('my-page').classList.add('active');
-        renderMyProfile();
-      } else if (tab === 'form') {
-        document.getElementById('form-page').classList.add('active');
-      }
-    }
-
-    function renderMyProfile() {
-      const section = document.getElementById('my-profile-section');
-      if (!myProfile) {
-        section.innerHTML = '<div class="empty-state"><div class="icon">📝</div><p>您还没有登记档案</p><p style="margin-top:10px;"><button class="btn btn-primary" onclick="showTab(\'form\');document.querySelectorAll(\'.tab\')[2].click()">去登记</button></p></div>';
+    
+    fabBtn.onclick = () => modal.classList.add('active');
+    closeModal.onclick = () => modal.classList.remove('active');
+    cancelBtn.onclick = () => modal.classList.remove('active');
+    
+    modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('active'); };
+    
+    submitBtn.onclick = () => {
+      if (!memberForm.checkValidity()) {
+        memberForm.reportValidity();
         return;
       }
-      section.innerHTML = `
-        <div class="my-profile-card">
-          <h3>${myProfile.nickname}</h3>
-          <p>${myProfile.age || (2025 - myProfile.birthYear)}岁 · ${myProfile.region || ''} · ${myProfile.profession || ''}</p>
-          <p style="margin-top:10px;">${myProfile.bio || '暂无简介'}</p>
-          <p style="margin-top:10px;font-size:12px;">登记时间: ${myProfile.registeredAt || ''}</p>
-          <div style="margin-top:15px;">
-            <button class="btn btn-secondary" onclick="editMyProfile()">编辑档案</button>
-            <button class="btn btn-secondary" style="background:#ff4757;color:white;" onclick="deleteMyProfile()">删除档案</button>
-          </div>
-        </div>
-      `;
-    }
-
-    function editMyProfile() {
-      if (!myProfile) return;
-      document.getElementById('nickname').value = myProfile.nickname || '';
-      document.getElementById('gender').value = myProfile.gender || '';
-      document.getElementById('birthYear').value = myProfile.birthYear || '';
-      document.getElementById('height').value = myProfile.height || '';
-      document.getElementById('weight').value = myProfile.weight || '';
-      document.getElementById('education').value = myProfile.education || '本科';
-      document.getElementById('region').value = myProfile.region || '北京';
-      document.getElementById('profession').value = myProfile.profession || '';
-      document.getElementById('income').value = myProfile.income || '10-20万';
-      document.getElementById('maritalStatus').value = myProfile.maritalStatus || '未婚';
-      document.getElementById('bio').value = myProfile.bio || '';
-      document.getElementById('expectAge').value = myProfile.expectAge || '';
-      document.getElementById('expectRegion').value = myProfile.expectRegion || '';
-      showTab('form');
-      document.querySelectorAll('.tab')[2].click();
-    }
-
-    function deleteMyProfile() {
-      if (confirm('确定要删除您的档案吗？')) {
-        myProfile = null;
-        localStorage.removeItem('xinghun_my_profile');
-        renderMyProfile();
-        alert('档案已删除');
-      }
-    }
-
-    function saveProfile(e) {
-      e.preventDefault();
-      const data = {
-        id: myProfile ? myProfile.id : Date.now(),
-        nickname: document.getElementById('nickname').value,
+      
+      const profile = {
+        id: 'u' + Date.now(),
+        name: document.getElementById('name').value,
         gender: document.getElementById('gender').value,
-        birthYear: parseInt(document.getElementById('birthYear').value),
-        age: 2025 - parseInt(document.getElementById('birthYear').value),
-        height: parseInt(document.getElementById('height').value) || 0,
-        weight: parseInt(document.getElementById('weight').value) || 0,
-        education: document.getElementById('education').value,
-        region: document.getElementById('region').value,
-        profession: document.getElementById('profession').value,
-        income: document.getElementById('income').value,
-        maritalStatus: document.getElementById('maritalStatus').value,
-        bio: document.getElementById('bio').value,
-        expectAge: document.getElementById('expectAge').value,
-        expectRegion: document.getElementById('expectRegion').value,
-        avatar: myProfile ? myProfile.avatar : `https://ui-avatars.com/api/?background=${document.getElementById('gender').value === 'male' ? '0D8ABC' : 'E91E63'}&color=fff&size=128&font-size=0.4&bold=true&name=${encodeURIComponent(document.getElementById('nickname').value)}`,
-        registeredAt: myProfile ? myProfile.registeredAt : new Date().toISOString().split('T')[0],
-        views: myProfile ? myProfile.views : 0,
-        featured: false
+        age: parseInt(document.getElementById('age').value),
+        height: parseInt(document.getElementById('height').value),
+        city: document.getElementById('city').value,
+        purpose: document.getElementById('purpose').value,
+        intro: document.getElementById('intro').value,
+        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + Date.now(),
+        verified: false,
+        online: true,
+        lastActive: new Date().toISOString()
       };
-      myProfile = data;
-      localStorage.setItem('xinghun_my_profile', JSON.stringify(data));
-      const existIdx = profiles.findIndex(p => p.id === data.id);
-      if (existIdx >= 0) {
-        profiles[existIdx] = data;
-      } else {
-        profiles.unshift(data);
-      }
-      saveProfiles();
-      getStats();
-      clearForm();
-      showTab('my');
-      document.querySelectorAll('.tab')[1].click();
-      alert('档案保存成功！');
-    }
-
-    function clearForm() {
-      document.getElementById('profile-form').reset();
-    }
-
-    function applyFilters() {
-      const gender = document.getElementById('filter-gender').value;
-      const region = document.getElementById('filter-region').value;
-      const education = document.getElementById('filter-education').value;
-      const marital = document.getElementById('filter-marital').value;
-      let filtered = [...profiles];
-      if (gender) filtered = filtered.filter(p => p.gender === gender);
-      if (region) filtered = filtered.filter(p => p.region === region);
-      if (education) filtered = filtered.filter(p => p.education === education);
-      if (marital) filtered = filtered.filter(p => p.maritalStatus === marital);
-      renderProfiles(filtered);
-    }
-
-    function resetFilters() {
-      document.getElementById('filter-gender').value = '';
-      document.getElementById('filter-region').value = '';
-      document.getElementById('filter-education').value = '';
-      document.getElementById('filter-marital').value = '';
-      renderProfiles();
-    }
-
-    document.getElementById('filter-gender').addEventListener('change', applyFilters);
-    document.getElementById('filter-region').addEventListener('change', applyFilters);
-    document.getElementById('filter-education').addEventListener('change', applyFilters);
-    document.getElementById('filter-marital').addEventListener('change', applyFilters);
-
-    loadProfiles();
-    getStats();
-    renderProfiles();
+      
+      profiles.push(profile);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(profiles));
+      
+      memberForm.reset();
+      modal.classList.remove('active');
+      render();
+    };
+    
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.onclick = () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.dataset.filter;
+        render();
+      };
+    });
+    
+    searchInput.oninput = render;
+    
+    render();
   </script>
 </body>
 </html>
