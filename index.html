@@ -9,6 +9,7 @@
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; }
     .header { background: #fff; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
     .header h1 { font-size: 20px; color: #1a73e8; text-align: center; }
+    .notice { background: #fff3cd; padding: 12px 16px; font-size: 13px; color: #856404; text-align: center; border-bottom: 1px solid #ffeeba; }
     .tabs { display: flex; background: #fff; border-bottom: 1px solid #e0e0e0; overflow-x: auto; }
     .tab { flex: 1; min-width: 100px; padding: 14px 12px; text-align: center; font-size: 14px; color: #666; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; white-space: nowrap; }
     .tab.active { color: #1a73e8; border-bottom-color: #1a73e8; font-weight: 600; }
@@ -20,6 +21,8 @@
     .card-avatar img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
     .card-badge { position: absolute; top: 12px; left: 12px; background: #1a73e8; color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
     .card-badge.female { background: #e91e63; }
+    .card-badge.gay { background: #ff5722; }
+    .card-badge.les { background: #9c27b0; }
     .card-online { position: absolute; top: 12px; right: 12px; width: 12px; height: 12px; background: #34a853; border-radius: 50%; border: 2px solid #fff; }
     .card-body { padding: 16px; }
     .card-name { font-size: 18px; font-weight: 700; color: #333; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
@@ -37,20 +40,26 @@
     .fab:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6); }
     .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
     .modal.active { display: flex; }
-    .modal-content { background: #fff; border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
+    .modal-content { background: #fff; border-radius: 20px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
     @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    .modal-header { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+    .modal-header { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #fff; }
     .modal-header h2 { font-size: 18px; color: #333; }
     .modal-close { background: none; border: none; font-size: 24px; color: #999; cursor: pointer; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
     .modal-close:hover { color: #333; }
     .modal-body { padding: 20px; }
-    .form-group { margin-bottom: 16px; }
+    .form-section { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px dashed #eee; }
+    .form-section:last-child { border-bottom: none; }
+    .section-title { font-size: 16px; color: #1a73e8; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .form-group { margin-bottom: 14px; }
     .form-group label { display: block; margin-bottom: 6px; font-size: 14px; color: #555; font-weight: 500; }
+    .form-group label .required { color: #ea4335; }
     .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; transition: border-color 0.2s; }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #1a73e8; }
     .form-row { display: flex; gap: 12px; }
     .form-row .form-group { flex: 1; }
-    .modal-footer { padding: 16px 20px; border-top: 1px solid #eee; display: flex; gap: 12px; }
+    .form-row-3 { display: flex; gap: 12px; }
+    .form-row-3 .form-group { flex: 1; }
+    .modal-footer { padding: 16px 20px; border-top: 1px solid #eee; display: flex; gap: 12px; position: sticky; bottom: 0; background: #fff; }
     .modal-footer button { flex: 1; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
     .btn-cancel { background: #f5f5f5; color: #666; border: 1px solid #ddd; }
     .btn-cancel:hover { background: #e8e8e8; }
@@ -63,6 +72,10 @@
     .search-input:focus { outline: none; background: #fff; border-color: #1a73e8; }
     .counter { padding: 12px 16px; background: #e8f0fe; color: #1a73e8; text-align: center; font-size: 14px; }
     .counter span { font-weight: 700; }
+    .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
+    .info-item { background: #f8f9fa; padding: 8px 12px; border-radius: 8px; font-size: 13px; }
+    .info-item .label { color: #999; font-size: 12px; }
+    .info-item .value { color: #333; font-weight: 500; }
   </style>
 </head>
 <body>
@@ -70,10 +83,13 @@
     <h1>形婚网</h1>
   </div>
   
+  <div class="notice">为高效精准匹配、真诚交友，请如实填写以下信息（内容保密）</div>
+  
   <div class="tabs">
     <div class="tab active" data-filter="all">全部</div>
-    <div class="tab" data-filter="male">男士</div>
-    <div class="tab" data-filter="female">女士</div>
+    <div class="tab" data-filter="gay">GAY</div>
+    <div class="tab" data-filter="les">LES</div>
+    <div class="tab" data-filter="straight">直</div>
   </div>
   
   <div class="search-bar">
@@ -86,11 +102,11 @@
     <div class="empty">
       <div class="empty-icon">📋</div>
       <p>暂无会员信息</p>
-      <p style="font-size:13px;margin-top:8px;">点击右下角"+"按钮添加</p>
+      <p style="font-size:13px;margin-top:8px;">点击右下角"+"按钮登记</p>
     </div>
   </div>
   
-  <button class="fab" id="fabBtn" title="添加新会员">+</button>
+  <button class="fab" id="fabBtn" title="登记档案">+</button>
   
   <div class="modal" id="modal">
     <div class="modal-content">
@@ -100,65 +116,258 @@
       </div>
       <div class="modal-body">
         <form id="memberForm">
-          <div class="form-group">
-            <label>姓名 *</label>
-            <input type="text" id="name" required placeholder="请输入姓名">
-          </div>
-          <div class="form-row">
+          
+          <!-- 一、个人基础信息 -->
+          <div class="form-section">
+            <div class="section-title">一、个人基础信息</div>
+            
             <div class="form-group">
-              <label>性别 *</label>
-              <select id="gender" required>
-                <option value="male">男</option>
-                <option value="female">女</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>年龄 *</label>
-              <input type="number" id="age" required min="18" max="60" placeholder="24">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>身高(cm) *</label>
-              <input type="number" id="height" required min="150" max="200" placeholder="170">
-            </div>
-            <div class="form-group">
-              <label>所在城市 *</label>
-              <select id="city" required>
+              <label>来源渠道 <span class="required">*</span></label>
+              <select id="source" required>
                 <option value="">请选择</option>
-                <option value="北京">北京</option>
-                <option value="上海">上海</option>
-                <option value="广州">广州</option>
-                <option value="深圳">深圳</option>
-                <option value="杭州">杭州</option>
-                <option value="南京">南京</option>
-                <option value="武汉">武汉</option>
-                <option value="成都">成都</option>
-                <option value="重庆">重庆</option>
-                <option value="西安">西安</option>
-                <option value="苏州">苏州</option>
-                <option value="天津">天津</option>
-                <option value="长沙">长沙</option>
-                <option value="郑州">郑州</option>
+                <option value="微信">微信</option>
+                <option value="小红书">小红书</option>
+                <option value="抖音">抖音</option>
+                <option value="豆瓣">豆瓣</option>
+                <option value="朋友推荐">朋友推荐</option>
+                <option value="百度">百度</option>
                 <option value="其他">其他</option>
               </select>
             </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>你是 <span class="required">*</span></label>
+                <select id="orientation" required>
+                  <option value="">请选择</option>
+                  <option value="gay">GAY</option>
+                  <option value="les">LES</option>
+                  <option value="straight">直</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>年龄 <span class="required">*</span></label>
+                <input type="number" id="age" required min="18" max="60" placeholder="24">
+              </div>
+            </div>
+            
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>身高(cm) <span class="required">*</span></label>
+                <input type="number" id="height" required min="150" max="200" placeholder="170">
+              </div>
+              <div class="form-group">
+                <label>体重(kg)</label>
+                <input type="number" id="weight" placeholder="65">
+              </div>
+              <div class="form-group">
+                <label>学历 <span class="required">*</span></label>
+                <select id="education" required>
+                  <option value="">请选择</option>
+                  <option value="高中及以下">高中及以下</option>
+                  <option value="大专">大专</option>
+                  <option value="本科">本科</option>
+                  <option value="硕士">硕士</option>
+                  <option value="博士">博士</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>职业 <span class="required">*</span></label>
+                <input type="text" id="occupation" required placeholder="如：互联网工程师">
+              </div>
+              <div class="form-group">
+                <label>年收入 <span class="required">*</span></label>
+                <select id="income" required>
+                  <option value="">请选择</option>
+                  <option value="10万以下">10万以下</option>
+                  <option value="10-20万">10-20万</option>
+                  <option value="20-30万">20-30万</option>
+                  <option value="30-50万">30-50万</option>
+                  <option value="50万以上">50万以上</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>定居地 <span class="required">*</span></label>
+                <select id="city" required>
+                  <option value="">请选择</option>
+                  <option value="北京">北京</option>
+                  <option value="上海">上海</option>
+                  <option value="广州">广州</option>
+                  <option value="深圳">深圳</option>
+                  <option value="杭州">杭州</option>
+                  <option value="南京">南京</option>
+                  <option value="武汉">武汉</option>
+                  <option value="成都">成都</option>
+                  <option value="重庆">重庆</option>
+                  <option value="西安">西安</option>
+                  <option value="苏州">苏州</option>
+                  <option value="天津">天津</option>
+                  <option value="长沙">长沙</option>
+                  <option value="郑州">郑州</option>
+                  <option value="其他">其他</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>老家</label>
+                <input type="text" id="hometown" placeholder="如：河南郑州">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>房车情况 <span class="required">*</span></label>
+                <select id="houseCar" required>
+                  <option value="">请选择</option>
+                  <option value="有房有车">有房有车</option>
+                  <option value="有房无车">有房无车</option>
+                  <option value="有车无房">有车无房</option>
+                  <option value="有贷">有贷</option>
+                  <option value="无房无车">无房无车</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>婚史 <span class="required">*</span></label>
+                <select id="marriageHistory" required>
+                  <option value="">请选择</option>
+                  <option value="未婚">未婚</option>
+                  <option value="离异">离异</option>
+                  <option value="丧偶">丧偶</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>是否有同性伴侣 <span class="required">*</span></label>
+                <select id="hasPartner" required>
+                  <option value="">请选择</option>
+                  <option value="有">有</option>
+                  <option value="无">无</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>可接受对方地域 <span class="required">*</span></label>
+                <input type="text" id="acceptRegion" required placeholder="如：全国、本省">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>家庭简述</label>
+              <textarea id="familyDesc" rows="2" placeholder="家人情况、是否催婚等"></textarea>
+            </div>
           </div>
-          <div class="form-group">
-            <label>形婚目的 *</label>
-            <select id="purpose" required>
-              <option value="">请选择</option>
-              <option value="形婚">形婚</option>
-              <option value="恋爱">恋爱</option>
-              <option value="结婚">结婚</option>
-              <option value="朋友">朋友</option>
-              <option value="形婚/恋爱">形婚/恋爱</option>
-            </select>
+          
+          <!-- 二、形婚核心诉求 -->
+          <div class="form-section">
+            <div class="section-title">二、形婚核心诉求</div>
+            
+            <div class="form-group">
+              <label>形婚原因 <span class="required">*</span></label>
+              <textarea id="reason" rows="2" required placeholder="请简要说明形婚原因..."></textarea>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>找形婚多久了 <span class="required">*</span></label>
+                <select id="searchDuration" required>
+                  <option value="">请选择</option>
+                  <option value="刚了解">刚了解</option>
+                  <option value="半年内">半年内</option>
+                  <option value="半年到一年">半年到一年</option>
+                  <option value="一年以上">一年以上</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>计划哪年完成 <span class="required">*</span></label>
+                <input type="number" id="planYear" required min="2024" max="2030" placeholder="2025">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>是否领证 <span class="required">*</span></label>
+                <select id="register" required>
+                  <option value="">请选择</option>
+                  <option value="是">是</option>
+                  <option value="否">否</option>
+                  <option value="可协商">可协商</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>是否办婚礼 <span class="required">*</span></label>
+                <select id="wedding" required>
+                  <option value="">请选择</option>
+                  <option value="是">是</option>
+                  <option value="否">否</option>
+                  <option value="可协商">可协商</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>彩礼/嫁妆 <span class="required">*</span></label>
+                <select id="dowry" required>
+                  <option value="">请选择</option>
+                  <option value="需要">需要</option>
+                  <option value="不需要">不需要</option>
+                  <option value="走流程">走流程</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>是否要孩子 <span class="required">*</span></label>
+                <select id="wantChild" required>
+                  <option value="">请选择</option>
+                  <option value="是">是</option>
+                  <option value="否">否</option>
+                  <option value="待定">待定</option>
+                </select>
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label>个人简介</label>
-            <textarea id="intro" rows="3" placeholder="简单介绍一下自己..."></textarea>
+          
+          <!-- 三、个人补充 & 对方要求 -->
+          <div class="form-section">
+            <div class="section-title">三、个人补充 & 对方要求</div>
+            
+            <div class="form-group">
+              <label>个人其他补充</label>
+              <textarea id="personal补充" rows="3" placeholder="其他想补充的信息..."></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label>对形婚对象的要求</label>
+              <textarea id="requirements" rows="3" placeholder="对对方的期望和要求..."></textarea>
+            </div>
           </div>
+          
+          <!-- 四、联系方式 -->
+          <div class="form-section">
+            <div class="section-title">四、联系方式</div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>手机号码 <span class="required">*</span></label>
+                <input type="tel" id="phone" required placeholder="请输入手机号" maxlength="11">
+              </div>
+              <div class="form-group">
+                <label>微信号 <span class="required">*</span></label>
+                <input type="text" id="wechat" required placeholder="请输入微信号">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>姓名/昵称 <span class="required">*</span></label>
+              <input type="text" id="name" required placeholder="请输入姓名或昵称">
+            </div>
+          </div>
+          
         </form>
       </div>
       <div class="modal-footer">
@@ -180,54 +389,65 @@
     let currentFilter = 'all';
     let profiles = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
     
+    function getOrientationLabel(ori) {
+      const map = { 'gay': 'GAY', 'les': 'LES', 'straight': '直' };
+      return map[ori] || ori;
+    }
+    
+    function getOrientationClass(ori) {
+      const map = { 'gay': 'gay', 'les': 'les', 'straight': '' };
+      return map[ori] || '';
+    }
+    
     function render() {
       const cards = document.getElementById('cards');
       const counter = document.getElementById('counter');
       let filtered = profiles;
       
       if (currentFilter !== 'all') {
-        filtered = profiles.filter(p => p.gender === currentFilter);
+        filtered = profiles.filter(p => p.orientation === currentFilter);
       }
       
       const search = searchInput.value.toLowerCase();
       if (search) {
         filtered = filtered.filter(p => 
-          p.name.toLowerCase().includes(search) || 
-          p.city.toLowerCase().includes(search)
+          (p.name && p.name.toLowerCase().includes(search)) || 
+          (p.city && p.city.toLowerCase().includes(search))
         );
       }
       
       counter.textContent = filtered.length;
       
       if (filtered.length === 0) {
-        cards.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><p>暂无会员信息</p><p style="font-size:13px;margin-top:8px;">点击右下角"+"按钮添加</p></div>';
+        cards.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><p>暂无会员信息</p><p style="font-size:13px;margin-top:8px;">点击右下角"+"按钮登记</p></div>';
         return;
       }
       
       cards.innerHTML = filtered.map(p => `
         <div class="card">
           <div class="card-header">
-            <div class="card-avatar" style="background: ${p.gender === 'male' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'}">
+            <div class="card-avatar" style="background: ${p.orientation === 'les' ? 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' : p.orientation === 'gay' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)'}">
               <img src="${p.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + p.id}" alt="${p.name}">
             </div>
-            <div class="card-badge ${p.gender === 'female' ? 'female' : ''}">${p.gender === 'male' ? '男' : '女'}</div>
+            <div class="card-badge ${getOrientationClass(p.orientation)}">${getOrientationLabel(p.orientation)}</div>
             ${p.online ? '<div class="card-online"></div>' : ''}
           </div>
           <div class="card-body">
-            <div class="card-name">${p.name} ${p.verified ? '<span class="verified">✓</span>' : ''}</div>
+            <div class="card-name">${p.name || '匿名'} ${p.verified ? '<span class="verified">✓</span>' : ''}</div>
             <div class="card-tags">
-              <span class="tag ${p.gender === 'female' ? 'female' : ''}">${p.age}岁</span>
-              <span class="tag ${p.gender === 'female' ? 'female' : ''}">${p.height}cm</span>
-              <span class="tag ${p.gender === 'female' ? 'female' : ''}">${p.city}</span>
+              <span class="tag ${p.orientation === 'les' ? 'female' : ''}">${p.age || '--'}岁</span>
+              <span class="tag ${p.orientation === 'les' ? 'female' : ''}">${p.height || '--'}cm</span>
+              <span class="tag ${p.orientation === 'les' ? 'female' : ''}">${p.city || '--'}</span>
             </div>
             <div class="card-info">
-              <div>📌 ${p.purpose}</div>
-              <div>${p.intro || '暂无简介'}</div>
+              <div>📌 ${p.register === '是' ? '计划领证' : p.register === '否' ? '不领证' : '领证可协商'} | ${p.wantChild === '是' ? '要孩子' : p.wantChild === '否' ? '不要孩子' : '孩子待定'}</div>
+              <div>🏠 ${p.city || '--'} | ${p.occupation || '--'} | ${p.income || '--'}</div>
+              <div>💬 ${p.reason ? (p.reason.substring(0, 30) + '...') : '暂无简介'}</div>
             </div>
           </div>
           <div class="card-footer">
             <span class="card-time">${p.lastActive ? new Date(p.lastActive).toLocaleDateString('zh-CN') : ''}</span>
-            <button class="card-btn">联系TA</button>
+            <button class="card-btn" onclick="alert('联系方式：\\n手机：' + (p.phone || '--') + '\\n微信：' + (p.wechat || '--'))">联系TA</button>
           </div>
         </div>
       `).join('');
@@ -248,12 +468,32 @@
       const profile = {
         id: 'u' + Date.now(),
         name: document.getElementById('name').value,
-        gender: document.getElementById('gender').value,
+        orientation: document.getElementById('orientation').value,
+        source: document.getElementById('source').value,
         age: parseInt(document.getElementById('age').value),
         height: parseInt(document.getElementById('height').value),
+        weight: parseInt(document.getElementById('weight').value) || 0,
+        education: document.getElementById('education').value,
+        occupation: document.getElementById('occupation').value,
+        income: document.getElementById('income').value,
         city: document.getElementById('city').value,
-        purpose: document.getElementById('purpose').value,
-        intro: document.getElementById('intro').value,
+        hometown: document.getElementById('hometown').value,
+        houseCar: document.getElementById('houseCar').value,
+        marriageHistory: document.getElementById('marriageHistory').value,
+        hasPartner: document.getElementById('hasPartner').value,
+        acceptRegion: document.getElementById('acceptRegion').value,
+        familyDesc: document.getElementById('familyDesc').value,
+        reason: document.getElementById('reason').value,
+        searchDuration: document.getElementById('searchDuration').value,
+        planYear: parseInt(document.getElementById('planYear').value),
+        register: document.getElementById('register').value,
+        wedding: document.getElementById('wedding').value,
+        dowry: document.getElementById('dowry').value,
+        wantChild: document.getElementById('wantChild').value,
+        personal补充: document.getElementById('personal补充').value,
+        requirements: document.getElementById('requirements').value,
+        phone: document.getElementById('phone').value,
+        wechat: document.getElementById('wechat').value,
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + Date.now(),
         verified: false,
         online: true,
